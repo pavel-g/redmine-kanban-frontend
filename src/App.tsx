@@ -1,31 +1,41 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import {AppBar} from "@material-ui/core";
+import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
+import MenuIcon from '@material-ui/icons/Menu';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 // TODO: 2020-08-20 Сделать начальную страницу
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+      root: {
+        flexGrow: 1,
+      },
+      menuButton: {
+        marginRight: theme.spacing(2),
+      },
+      title: {
+        flexGrow: 1,
+      },
+    }),
+);
+
 function App() {
-  // return (
-  //   <div className="App">
-  //     <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>
-  //         Edit <code>src/App.tsx</code> and save to reload.
-  //       </p>
-  //       <a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       >
-  //         Learn React
-  //       </a>
-  //     </header>
-  //   </div>
-  // );
+  const classes = useStyles();
+
   return (
-    <AppBar position="static"></AppBar>
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            Redmine Kanban
+          </Typography>
+        </Toolbar>
+      </AppBar>
+    </div>
   )
 }
 
