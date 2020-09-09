@@ -1,10 +1,12 @@
-// TODO: 2020-08-21 Добавить компонент содержащий jKanban
-
 import React from "react";
+import {KanbanConfig} from "../models/jkanban/kanban-config";
+import ReactTrello from "react-trello";
+import {ConverterJKanbanConfigToTrelloConfig} from "../converters/converter-jkanban-config-to-trello-config";
 
-function Kanban() {
+function Kanban(props: {id: number, config: KanbanConfig}) {
+  const data: ReactTrello.BoardData = ConverterJKanbanConfigToTrelloConfig(props.config);
   return (
-    <div id={""}></div>
+    <ReactTrello data={data}></ReactTrello>
   )
 }
 
