@@ -7,7 +7,10 @@ import {observer} from "mobx-react";
 const Kanban = observer((props: {id: number, config: KanbanConfig}) => {
   const data: ReactTrello.BoardData = ConverterJKanbanConfigToTrelloConfig(props.config);
   return (
-    <ReactTrello style={{backgroundColor: "white", overflowY: "revert", height: "revert"}} data={data}></ReactTrello>
+    <div>
+      <p>{props.config.title}</p>
+      <ReactTrello style={{backgroundColor: "white", overflowY: "revert", height: "revert"}} data={data}></ReactTrello>
+    </div>
   )
 })
 
