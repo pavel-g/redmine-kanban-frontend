@@ -9,7 +9,7 @@ const Kanban = observer((props: {id: number, config: KanbanConfig}) => {
   return (
     <div>
       <p>{props.config.title}</p>
-      <ReactTrello style={{backgroundColor: "white", overflowY: "revert", height: "revert"}} data={data}></ReactTrello>
+      <ReactTrello style={{backgroundColor: "white", overflowY: "unset", height: "unset"}} data={data}></ReactTrello>
     </div>
   )
 })
