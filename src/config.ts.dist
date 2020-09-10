@@ -1,3 +1,4 @@
 export const Config = {
-    backendUrl: 'http://localhost:3000'
+    backendUrl: 'http://localhost:3000',
+    redminePublicUrl: 'https://redmine.org'
 }
