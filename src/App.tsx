@@ -5,6 +5,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import KanbansAll from "./components/kanbans-all";
 import {store} from "./store/store";
+import {sidebarStore} from "./store/sidebar"
+import Sidebar, {SidebarProps} from "./components/sidebar";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -20,14 +22,24 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-function App() {
+const OnOpenSidebarClick = () => {
+  return sidebarStore.toggleSidebar()
+}
+
+const App = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+            onClick={OnOpenSidebarClick}
+          >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
@@ -35,6 +47,7 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
+      <Sidebar visible={sidebarStore.visible}></Sidebar>
       <KanbansAll boards={store.data}></KanbansAll>
     </div>
   )
