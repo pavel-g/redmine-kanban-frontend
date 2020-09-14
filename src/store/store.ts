@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {KanbanConfig} from "../models/jkanban/kanban-config";
 import {Config} from "../config";
-import {observable} from "mobx";
+import {action, observable} from "mobx";
 import {Board} from "../models/board";
 
 export class Store {
@@ -10,8 +10,9 @@ export class Store {
 
   name = observable.box("")
 
-  data: KanbanConfig[] = observable([])
+  data: KanbanConfig[] = observable.array([])
 
+  @action
   async loadData(force = false): Promise<KanbanConfig[]> {
     if (this.id.get() < 0) {
       return []
@@ -28,6 +29,7 @@ export class Store {
     return this.data
   }
 
+  @action
   async setId(id: number): Promise<KanbanConfig[]> {
     this.id.set(id)
     return await this.loadData(true)

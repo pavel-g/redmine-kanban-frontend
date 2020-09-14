@@ -18,16 +18,9 @@ const BoardsList = observer((props: BoardsListProps) => {
     return (<BoardSidebarButton item={item}/>)
   })
   return (
-    <>
-      <List>
-        {list}
-      </List>
-      <Divider/>
-      <ListItem button>
-        <ListItemIcon><AddIcon/></ListItemIcon>
-        <ListItemText primary="Добавить новую доску"></ListItemText>
-      </ListItem>
-    </>
+    <List>
+      {list}
+    </List>
   )
 })
 

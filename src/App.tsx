@@ -7,6 +7,8 @@ import KanbansAll from "./components/kanbans-all";
 import {store} from "./store/store";
 import {sidebarStore} from "./store/sidebar"
 import Sidebar, {SidebarProps} from "./components/sidebar";
+import AddBoardDialog from "./components/add-board-dialog";
+import {addBoardDialogStore} from "./store/add-board-dialog";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -48,6 +50,7 @@ const App = () => {
         </Toolbar>
       </AppBar>
       <Sidebar visible={sidebarStore.visible}></Sidebar>
+      <AddBoardDialog data={addBoardDialogStore.data}/>
       <KanbansAll boards={store.data}></KanbansAll>
     </div>
   )
