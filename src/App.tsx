@@ -13,6 +13,9 @@ import EditBoardDialog from "./components/edit-board-dialog";
 import {editBoardDialogStore} from "./store/edit-board-dialog";
 import EditIcon from '@material-ui/icons/Edit';
 import {ConverterKanbanConfigForEditor} from "./converters/converter-kanban-config-for-editor";
+import AddIssueDialog from "./components/add-issue-dialog";
+import {addIssueDialogStore} from "./store/add-issue-dialog-store";
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -36,6 +39,11 @@ const EditButtonClick = () => {
   editBoardDialogStore.data.visible = true
   const config = ConverterKanbanConfigForEditor(store.data)
   editBoardDialogStore.data.config = JSON.stringify(config, null, "    ")
+}
+
+const AddGroupIssueButtonClick = () => {
+  addIssueDialogStore.data.issueNumber = null
+  addIssueDialogStore.show()
 }
 
 const App = () => {
@@ -65,11 +73,20 @@ const App = () => {
           >
             <EditIcon/>
           </IconButton>
+          <IconButton
+            edge={"start"}
+            className={classes.menuButton}
+            color={"inherit"}
+            onClick={AddGroupIssueButtonClick}
+          >
+            <PlaylistAddIcon/>
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Sidebar visible={sidebarStore.visible}></Sidebar>
       <AddBoardDialog data={addBoardDialogStore.data}/>
       <EditBoardDialog data={editBoardDialogStore.data}/>
+      <AddIssueDialog data={addIssueDialogStore.data}/>
       <KanbansAll boards={store.data}></KanbansAll>
     </div>
   )
