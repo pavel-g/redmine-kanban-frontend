@@ -35,6 +35,15 @@ export class Store {
     return await this.loadData(true)
   }
 
+  @action
+  async save(config: string): Promise<void> {
+    const postData = {
+      config: JSON.parse(config)
+    }
+    await axios.post(`${Config.backendUrl}/board/${this.id}/update`, postData)
+    await this.loadData(true)
+  }
+
 }
 
 export const store = new Store()

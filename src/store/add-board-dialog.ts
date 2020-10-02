@@ -1,4 +1,4 @@
-import {action, observable} from "mobx";
+import {action, observable, reaction} from "mobx";
 
 export class AddBoardDialogStore {
 

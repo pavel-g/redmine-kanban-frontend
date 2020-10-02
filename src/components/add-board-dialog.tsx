@@ -31,6 +31,7 @@ const OnNameChange = (event: ChangeEvent) => {
 }
 
 const AddBoardDialog = observer((props: {data: AddBoardDialogProps}) => {
+  console.log('render AddBoardDialog') // DEBUG
   return (
     <Dialog
       open={props.data.visible}
