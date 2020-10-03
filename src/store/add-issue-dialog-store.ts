@@ -1,5 +1,6 @@
 import {action, observable} from "mobx";
 import {AddIssueDialogData} from "../models/components/add-issue-dialog-props";
+import {store} from "./store";
 
 export class AddIssueDialogStore {
 
@@ -19,8 +20,11 @@ export class AddIssueDialogStore {
   }
 
   @action
-  setIssueNumber(value: number|null): void {
+  async setIssueNumber(value: number|null): Promise<void> {
     this.data.issueNumber = value
+    if (value != null) {
+      await store.addGroupIssue(value)
+    }
   }
 
 }

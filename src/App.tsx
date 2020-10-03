@@ -12,10 +12,12 @@ import {addBoardDialogStore} from "./store/add-board-dialog";
 import EditBoardDialog from "./components/edit-board-dialog";
 import {editBoardDialogStore} from "./store/edit-board-dialog";
 import EditIcon from '@material-ui/icons/Edit';
-import {ConverterKanbanConfigForEditor} from "./converters/converter-kanban-config-for-editor";
 import AddIssueDialog from "./components/add-issue-dialog";
 import {addIssueDialogStore} from "./store/add-issue-dialog-store";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import axios from "axios";
+import {Config} from "./config";
+import {Board} from "./models/board";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -35,10 +37,12 @@ const OnOpenSidebarClick = () => {
   return sidebarStore.toggleSidebar()
 }
 
-const EditButtonClick = () => {
+const EditButtonClick = async () => {
+  const boardId = store.id.get()
+  const resp = await axios.get<Board>(`${Config.backendUrl}/board/${boardId}`)
+  const data = resp.data
+  editBoardDialogStore.data.config = JSON.stringify(data.config, null, "    ")
   editBoardDialogStore.data.visible = true
-  const config = ConverterKanbanConfigForEditor(store.data)
-  editBoardDialogStore.data.config = JSON.stringify(config, null, "    ")
 }
 
 const AddGroupIssueButtonClick = () => {

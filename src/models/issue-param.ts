@@ -1,5 +1,8 @@
+import {RedmineIssueData} from "./redmine-issue-data";
+
 export type IssueParam = {
     number?: number,
     title?: string,
-    children?: IssueParam[]
+    children?: IssueParam[],
+    redmineData?: RedmineIssueData
 }
