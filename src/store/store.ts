@@ -55,12 +55,26 @@ export class Store {
   }
 
   @action
-  async addGroupIssue(issueNumber: number): Promise<void> {
+  async addGroupIssue(issueNumber: number, loadChildren: boolean): Promise<void> {
     if (!this.config.config) {
       return
     }
 
+    const children = (loadChildren)
+      ? (await axios.get<number[]>(`${Config.backendUrl}/issue/${issueNumber}/children`)).data
+      : null
+
+    console.log('loaded children ids:', children) // DEBUG
+
     const issueParam: IssueParam = {number: issueNumber}
+    if (children) {
+      issueParam.children = children.map(issueNumber => {
+        return {
+          number: issueNumber
+        }
+      })
+    }
+
     this.config.config.push(issueParam)
     const postData = {
       config: this.config.config

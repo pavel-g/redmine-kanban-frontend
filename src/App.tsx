@@ -18,6 +18,9 @@ import axios from "axios";
 import {Config} from "./config";
 import {Board} from "./models/board";
 import {AddIssueDialogStore} from "./store/add-issue-dialog-store";
+import AddGroupDialog from "./components/add-group-dialog";
+import {AddGroupDialogStore} from "./store/add-group-dialog-store";
+import {AddGroupDialogData} from "./models/components/add-group-dialog-props";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -48,17 +51,24 @@ const EditButtonClick = async () => {
 const App = () => {
   const classes = useStyles();
 
-  const addIssueDialogStore = new AddIssueDialogStore()
-  const onSelectNewIssue = async (issueNumber: number|null) => {
-    if (issueNumber != null) {
-      await store.addGroupIssue(issueNumber)
+  const addGroupDialogStore = new AddGroupDialogStore()
+  const onSelectNewGroup = async (ok: boolean, data?: AddGroupDialogData) => {
+    if (!ok || !data) {
+      return
     }
-    addIssueDialogStore.setIssueNumber(0)
-    addIssueDialogStore.hide()
+    const issueNumber = data.issueNumber
+    const loadChildren = data.loadChildren
+    if (issueNumber != null) {
+      await store.addGroupIssue(issueNumber, loadChildren)
+    }
+    addGroupDialogStore.setIssueNumber(0)
+    addGroupDialogStore.setLoadChildren(true)
+    addGroupDialogStore.hide()
   }
-  const onShowAddIssueDialog = () => {
-    addIssueDialogStore.setIssueNumber(0)
-    addIssueDialogStore.show()
+  const onShowAddGroupDialog = () => {
+    addGroupDialogStore.setIssueNumber(0)
+    addGroupDialogStore.setLoadChildren(true)
+    addGroupDialogStore.show()
   }
 
   return (
@@ -89,7 +99,7 @@ const App = () => {
             edge={"start"}
             className={classes.menuButton}
             color={"inherit"}
-            onClick={onShowAddIssueDialog}
+            onClick={onShowAddGroupDialog}
           >
             <PlaylistAddIcon/>
           </IconButton>
@@ -98,9 +108,9 @@ const App = () => {
       <Sidebar visible={sidebarStore.visible}/>
       <AddBoardDialog data={addBoardDialogStore.data}/>
       <EditBoardDialog data={editBoardDialogStore.data}/>
-      <AddIssueDialog
-        data={addIssueDialogStore}
-        callback={onSelectNewIssue}
+      <AddGroupDialog
+        data={addGroupDialogStore}
+        callback={onSelectNewGroup}
       />
       <KanbansAll store={store}/>
     </div>
