@@ -58,7 +58,7 @@ const App = () => {
   }
   const onShowAddIssueDialog = () => {
     addIssueDialogStore.setIssueNumber(0)
-    addIssueDialogStore.hide()
+    addIssueDialogStore.show()
   }
 
   return (

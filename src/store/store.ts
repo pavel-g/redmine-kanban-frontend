@@ -29,6 +29,8 @@ export class Store {
       this.id.set(response.data.id)
       this.name.set(response.data.name)
       this.data.splice(0, this.data.length)
+      // @ts-ignore
+      Object.getOwnPropertyNames(this.config).forEach(propName => delete this.config[propName])
       Object.assign(this.config, response.data.config)
       response.data.kanban?.forEach((kanbanConfig) => {
         this.data.push(kanbanConfig)
@@ -54,11 +56,14 @@ export class Store {
 
   @action
   async addGroupIssue(issueNumber: number): Promise<void> {
-    const config = this.config
+    if (!this.config.config) {
+      return
+    }
+
     const issueParam: IssueParam = {number: issueNumber}
-    config.config?.push(issueParam)
+    this.config.config.push(issueParam)
     const postData = {
-      config: config.config
+      config: this.config.config
     }
     await axios.post(`${Config.backendUrl}/board/${this.id}/update`, postData)
     await this.loadData(true)
