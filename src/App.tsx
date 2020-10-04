@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
@@ -6,18 +6,18 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import KanbansAll from "./components/kanbans-all";
 import {store} from "./store/store";
 import {sidebarStore} from "./store/sidebar"
-import Sidebar, {SidebarProps} from "./components/sidebar";
+import Sidebar from "./components/sidebar";
 import AddBoardDialog from "./components/add-board-dialog";
 import {addBoardDialogStore} from "./store/add-board-dialog";
 import EditBoardDialog from "./components/edit-board-dialog";
 import {editBoardDialogStore} from "./store/edit-board-dialog";
 import EditIcon from '@material-ui/icons/Edit';
 import AddIssueDialog from "./components/add-issue-dialog";
-import {addIssueDialogStore} from "./store/add-issue-dialog-store";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import axios from "axios";
 import {Config} from "./config";
 import {Board} from "./models/board";
+import {AddIssueDialogStore} from "./store/add-issue-dialog-store";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -45,13 +45,21 @@ const EditButtonClick = async () => {
   editBoardDialogStore.data.visible = true
 }
 
-const AddGroupIssueButtonClick = () => {
-  addIssueDialogStore.data.issueNumber = null
-  addIssueDialogStore.show()
-}
-
 const App = () => {
   const classes = useStyles();
+
+  const addIssueDialogStore = new AddIssueDialogStore()
+  const onSelectNewIssue = async (issueNumber: number|null) => {
+    if (issueNumber != null) {
+      await store.addGroupIssue(issueNumber)
+    }
+    addIssueDialogStore.setIssueNumber(0)
+    addIssueDialogStore.hide()
+  }
+  const onShowAddIssueDialog = () => {
+    addIssueDialogStore.setIssueNumber(0)
+    addIssueDialogStore.hide()
+  }
 
   return (
     <div className={classes.root}>
@@ -81,17 +89,20 @@ const App = () => {
             edge={"start"}
             className={classes.menuButton}
             color={"inherit"}
-            onClick={AddGroupIssueButtonClick}
+            onClick={onShowAddIssueDialog}
           >
             <PlaylistAddIcon/>
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Sidebar visible={sidebarStore.visible}></Sidebar>
+      <Sidebar visible={sidebarStore.visible}/>
       <AddBoardDialog data={addBoardDialogStore.data}/>
       <EditBoardDialog data={editBoardDialogStore.data}/>
-      <AddIssueDialog data={addIssueDialogStore.data}/>
-      <KanbansAll boards={store.data}></KanbansAll>
+      <AddIssueDialog
+        data={addIssueDialogStore}
+        callback={onSelectNewIssue}
+      />
+      <KanbansAll store={store}/>
     </div>
   )
 }

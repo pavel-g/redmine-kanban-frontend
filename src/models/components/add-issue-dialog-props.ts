@@ -4,5 +4,6 @@ export type AddIssueDialogData = {
 }
 
 export type AddIssueDialogProps = {
-  data: AddIssueDialogData
+  data: AddIssueDialogData,
+  callback?: (issueNumber: number|null) => void
 }

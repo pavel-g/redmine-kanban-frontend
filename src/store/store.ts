@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {KanbanConfig} from "../models/jkanban/kanban-config";
 import {Config} from "../config";
-import {action, IObservableValue, observable} from "mobx";
+import {action, IObservableObject, IObservableValue, observable} from "mobx";
 import {Board} from "../models/board";
 import {BoardFullInfo} from "../models/board-full-info";
 import {IssueParam} from "../models/issue-param";
@@ -12,7 +12,7 @@ export class Store {
 
   name = observable.box("")
 
-  config: IObservableValue<Board> = observable.box({
+  config: Board = observable.object({
     id: -1,
     name: ""
   })
@@ -29,7 +29,7 @@ export class Store {
       this.id.set(response.data.id)
       this.name.set(response.data.name)
       this.data.splice(0, this.data.length)
-      this.config.set(response.data.config)
+      Object.assign(this.config, response.data.config)
       response.data.kanban?.forEach((kanbanConfig) => {
         this.data.push(kanbanConfig)
       })
@@ -54,7 +54,7 @@ export class Store {
 
   @action
   async addGroupIssue(issueNumber: number): Promise<void> {
-    const config = this.config.get()
+    const config = this.config
     const issueParam: IssueParam = {number: issueNumber}
     config.config?.push(issueParam)
     const postData = {
@@ -62,6 +62,92 @@ export class Store {
     }
     await axios.post(`${Config.backendUrl}/board/${this.id}/update`, postData)
     await this.loadData(true)
+  }
+
+  @action
+  async addGroupBefore(issueNumber: number, id: number|string): Promise<void> {
+    if (!this.config.config) {
+      return
+    }
+
+    const targetGroup = this.findById(id)
+    if (!targetGroup) {
+      return
+    }
+
+    const index = this.config.config.indexOf(targetGroup)
+    const newIssueParam: IssueParam = {number: issueNumber}
+    this.config.config.splice(index, 0, newIssueParam)
+
+    // TODO: 2020-10-04 Вынести обощённый код в отдельный метод - повторяется кусок ещё в методах addGroupAfter и addIssueInside
+    const postData = {
+      config: this.config.config
+    }
+    await axios.post(`${Config.backendUrl}/board/${this.id}/update`, postData)
+    await this.loadData(true)
+  }
+
+  @action
+  async addGroupAfter(issueNumber: number, id: number|string): Promise<void> {
+    if (!this.config.config) {
+      return
+    }
+
+    const targetGroup = this.findById(id)
+    if (!targetGroup) {
+      return
+    }
+
+    const index = this.config.config.indexOf(targetGroup)
+    const newIssueParam: IssueParam = {number: issueNumber}
+    this.config.config.splice(index + 1, 0, newIssueParam)
+
+    const postData = {
+      config: this.config.config
+    }
+    await axios.post(`${Config.backendUrl}/board/${this.id}/update`, postData)
+    await this.loadData(true)
+  }
+
+  @action
+  async addIssueInside(issueNumber: number, id: number|string): Promise<void> {
+    if (!this.config.config) {
+      return
+    }
+
+    const targetGroup = this.findById(id)
+    if (!targetGroup) {
+      return
+    }
+
+    const newIssueParam: IssueParam = {number: issueNumber}
+    if (!targetGroup.children) {
+      targetGroup.children = []
+    }
+    targetGroup.children.push(newIssueParam)
+
+    const postData = {
+      config: this.config.config
+    }
+    await axios.post(`${Config.backendUrl}/board/${this.id}/update`, postData)
+    await this.loadData(true)
+  }
+
+  private findById(id: number|string): IssueParam|null {
+    if (typeof id === 'number') {
+      return this.findByIssueNumber(id)
+    } else if (typeof id === 'string') {
+      return this.findByGroupName(id)
+    }
+    return null
+  }
+
+  private findByIssueNumber(id: number): IssueParam|null {
+    return this.config?.config?.find(issueParam => issueParam.number === id) || null
+  }
+
+  private findByGroupName(id: string): IssueParam|null {
+    return this.config?.config?.find(issueParam => issueParam.title === id) || null
   }
 
 }

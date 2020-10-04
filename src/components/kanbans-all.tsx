@@ -1,16 +1,21 @@
 import React from "react";
-import {KanbanConfig} from "../models/jkanban/kanban-config";
 import Kanban from "./kanban";
 import {observer} from "mobx-react";
+import {KanbansAllProps} from "../models/components/kanban-all-props";
+import {Store} from "../store/store";
 
-type KanbansAllProps = {boards: KanbanConfig[]}
-
-const KanbansAll = observer((props: KanbansAllProps) => {
-  const components = props.boards.map((boardConfig) => {
+const KanbansAll = observer((props: {store: Store}) => {
+  const components = props.store.config.config?.map(issueParam => {
     return (
-      <Kanban id={-1} config={boardConfig}></Kanban>
+      <Kanban
+        number={issueParam.number}
+        title={issueParam.title}
+        children={issueParam.children}
+        redmineData={issueParam.redmineData}
+      />
     )
   })
+  console.log('KanbanAll components', components) // DEBUG
   return (
     <>
       {components}

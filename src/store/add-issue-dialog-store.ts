@@ -1,32 +1,26 @@
-import {action, observable} from "mobx";
-import {AddIssueDialogData} from "../models/components/add-issue-dialog-props";
-import {store} from "./store";
+import {action, IObservableValue, observable} from "mobx";
 
 export class AddIssueDialogStore {
 
-  data = observable.object({
-    visible: false,
-    issueNumber: null
-  } as AddIssueDialogData)
+  @observable
+  visible: boolean = false
+
+  @observable
+  issueNumber: number|null = null
 
   @action
   show() {
-    this.data.visible = true
+    this.visible = true
   }
 
   @action
   hide() {
-    this.data.visible = false
+    this.visible = false
   }
 
   @action
-  async setIssueNumber(value: number|null): Promise<void> {
-    this.data.issueNumber = value
-    if (value != null) {
-      await store.addGroupIssue(value)
-    }
+  setIssueNumber(value: number|null): void {
+    this.issueNumber = value
   }
 
 }
-
-export const addIssueDialogStore = new AddIssueDialogStore()
