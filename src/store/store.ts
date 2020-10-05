@@ -56,10 +56,6 @@ export class Store {
 
   @action
   async addGroupIssue(issueNumber: number, loadChildren: boolean): Promise<void> {
-    if (!this.config.config) {
-      return
-    }
-
     const children = (loadChildren)
       ? (await axios.get<number[]>(`${Config.backendUrl}/issue/${issueNumber}/children`)).data
       : null
@@ -73,6 +69,10 @@ export class Store {
           number: issueNumber
         }
       })
+    }
+
+    if (!this.config.config) {
+      this.config.config = []
     }
 
     this.config.config.push(issueParam)
