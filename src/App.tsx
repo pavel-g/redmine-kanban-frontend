@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
 import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
@@ -12,12 +12,10 @@ import {addBoardDialogStore} from "./store/add-board-dialog";
 import EditBoardDialog from "./components/edit-board-dialog";
 import {editBoardDialogStore} from "./store/edit-board-dialog";
 import EditIcon from '@material-ui/icons/Edit';
-import AddIssueDialog from "./components/add-issue-dialog";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import axios from "axios";
 import {Config} from "./config";
 import {Board} from "./models/board";
-import {AddIssueDialogStore} from "./store/add-issue-dialog-store";
 import AddGroupDialog from "./components/add-group-dialog";
 import {AddGroupDialogStore} from "./store/add-group-dialog-store";
 import {AddGroupDialogData} from "./models/components/add-group-dialog-props";
@@ -53,20 +51,19 @@ const App = () => {
 
   const addGroupDialogStore = new AddGroupDialogStore()
   const onSelectNewGroup = async (ok: boolean, data?: AddGroupDialogData) => {
-    if (!ok || !data) {
-      return
+    if (ok && data) {
+      const issueNumber = data.issueNumber
+      const loadChildren = data.loadChildren
+      if (issueNumber != null) {
+        await store.addGroupIssue(issueNumber, loadChildren)
+      }
     }
-    const issueNumber = data.issueNumber
-    const loadChildren = data.loadChildren
-    if (issueNumber != null) {
-      await store.addGroupIssue(issueNumber, loadChildren)
-    }
-    addGroupDialogStore.setIssueNumber(0)
+    addGroupDialogStore.setIssueNumber(null)
     addGroupDialogStore.setLoadChildren(true)
     addGroupDialogStore.hide()
   }
   const onShowAddGroupDialog = () => {
-    addGroupDialogStore.setIssueNumber(0)
+    addGroupDialogStore.setIssueNumber(null)
     addGroupDialogStore.setLoadChildren(true)
     addGroupDialogStore.show()
   }

@@ -3,10 +3,10 @@ import {action, observable} from "mobx";
 export class AddGroupDialogStore {
 
   @observable
-  visible = false
+  visible: boolean = false
 
   @observable
-  issueNumber = 0
+  issueNumber: number|null = 0
 
   @observable
   loadChildren = true
@@ -22,7 +22,7 @@ export class AddGroupDialogStore {
   }
 
   @action
-  setIssueNumber(value: number): void {
+  setIssueNumber(value: number|null): void {
     this.issueNumber = value
   }
 
