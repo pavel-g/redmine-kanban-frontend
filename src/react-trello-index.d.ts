@@ -35,6 +35,7 @@ declare module ReactTrello {
     title?: string;
     label?: string;
     cards?: Array<Card<CardMetaData>>;
+    style: object;
   }
 
   interface BoardProps<CardMetaData = object> {
@@ -134,6 +135,8 @@ declare module ReactTrello {
      * Pass css style props to board container
      */
     style?: object;
+
+    laneStyle?: object;
     /**
      * Boolean to indicate a custom card template will be specified. Add the card component as child to Board
      */

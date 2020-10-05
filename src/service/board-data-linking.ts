@@ -64,7 +64,7 @@ export class BoardDataLinking {
           return {
             id: `${childIssue?.redmineData?.id}`,
             title: `${childIssue?.redmineData?.tracker?.name} #${childIssue?.redmineData?.id}`,
-            description: childIssue?.redmineData?.subject,
+            description: `${childIssue?.redmineData?.subject}\n\nисп: ${childIssue?.redmineData?.assigned_to?.name}`,
             url: this.getIssueUrl(childIssue?.redmineData?.id || -1)
           } as ItemConfig
         })

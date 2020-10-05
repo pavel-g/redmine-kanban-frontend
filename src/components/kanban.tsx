@@ -16,7 +16,16 @@ const useStyles = makeStyles(() =>
     groupTitleContainer: {
       display: "flex",
       flexDirection: "row",
-      justifyContent: "space-between"
+      justifyContent: "space-between",
+      alignItems: "center"
+    },
+    groupTitleText: {
+      paddingLeft: "15px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      fontWeight: "bold",
+      fontSize: "15px"
     }
   })
 )
@@ -70,10 +79,16 @@ const Kanban = observer((props: KanbanProps) => {
     addGroupBeforeStore.show()
   }
 
+  const onTitleClick = () => {
+    if (typeof props.number === 'number') {
+      gotoRedmineIssue(String(props.number))
+    }
+  }
+
   return (
     <div>
       <div className={classes.groupTitleContainer}>
-        <div>{reactTrelloData.title}</div>
+        <div className={classes.groupTitleText} onClick={onTitleClick}>{reactTrelloData.title}</div>
         <div>
           <AddIssueMenu
             onAddAfterClick={onAddGroupAfterMenuClick}
@@ -87,6 +102,10 @@ const Kanban = observer((props: KanbanProps) => {
           backgroundColor: "white",
           overflowY: "unset",
           height: "unset"
+        }}
+        laneStyle={{
+          height: "auto",
+          maxHeight: "unset"
         }}
         data={data}
         onCardClick={gotoRedmineIssue}
