@@ -35,7 +35,6 @@ declare module ReactTrello {
     title?: string;
     label?: string;
     cards?: Array<Card<CardMetaData>>;
-    style: object;
   }
 
   interface BoardProps<CardMetaData = object> {
