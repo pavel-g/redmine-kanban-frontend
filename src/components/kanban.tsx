@@ -88,7 +88,7 @@ const Kanban = observer((props: KanbanProps) => {
   return (
     <div>
       <div className={classes.groupTitleContainer}>
-        <div className={classes.groupTitleText} onClick={onTitleClick}>{reactTrelloData.title}</div>
+        <div className={classes.groupTitleText} onClick={onTitleClick}>{reactTrelloData.title} (статус: {props.redmineData?.status?.name})</div>
         <div>
           <AddIssueMenu
             onAddAfterClick={onAddGroupAfterMenuClick}
