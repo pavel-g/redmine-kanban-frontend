@@ -11,8 +11,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const AddGroupDialog = observer((props: AddGroupDialogProps) => {
-  console.log('render AddGroupDialog') // DEBUG
-
   const onAddButtonClick = () => {
     if (props.callback) {
       const data = {

@@ -5,11 +5,10 @@ import {observer} from "mobx-react";
 import {Config} from "../config";
 import {createStyles, makeStyles} from "@material-ui/core/styles";
 import AddIssueMenu from "./add-issue-menu";
-import {KanbanProps} from "../models/components/kanban-props";
-import {boardDataLinking} from "../service/board-data-linking";
 import AddIssueDialog from "./add-issue-dialog";
 import {AddIssueDialogStore} from "../store/add-issue-dialog-store";
 import {store} from "../store/store";
+import {KanbanConfig} from "../models/jkanban/kanban-config";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -35,9 +34,9 @@ const gotoRedmineIssue = (cardId: string) => {
   window.open(url)
 }
 
-const Kanban = observer((props: KanbanProps) => {
+const Kanban = observer((props: KanbanConfig) => {
   const classes = useStyles()
-  const reactTrelloData = boardDataLinking.getKanban(props)
+  const reactTrelloData = props
   if (!reactTrelloData) {
     return (<></>)
   }
@@ -46,7 +45,7 @@ const Kanban = observer((props: KanbanProps) => {
   const addIssueInsideStore = new AddIssueDialogStore()
   const addIssueInsideCallback = (issueNumber: number|null) => {
     if (issueNumber != null) {
-      store.addIssueInside(issueNumber, props.title || props.number || 0)
+      store.addIssueInside(issueNumber, props.number || props.title || 0)
     }
     addIssueInsideStore.hide()
   }
@@ -88,7 +87,7 @@ const Kanban = observer((props: KanbanProps) => {
   return (
     <div>
       <div className={classes.groupTitleContainer}>
-        <div className={classes.groupTitleText} onClick={onTitleClick}>{reactTrelloData.title} (статус: {props.redmineData?.status?.name})</div>
+        <div className={classes.groupTitleText} onClick={onTitleClick}>{reactTrelloData.title}</div>
         <div>
           <AddIssueMenu
             onAddAfterClick={onAddGroupAfterMenuClick}

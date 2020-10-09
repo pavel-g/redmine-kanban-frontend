@@ -5,17 +5,14 @@ import {KanbansAllProps} from "../models/components/kanban-all-props";
 import {Store} from "../store/store";
 
 const KanbansAll = observer((props: {store: Store}) => {
-  const components = props.store.config.config?.map(issueParam => {
+  const components = props.store.data.map(param => {
     return (
       <Kanban
-        number={issueParam.number}
-        title={issueParam.title}
-        children={issueParam.children}
-        redmineData={issueParam.redmineData}
+        {...param}
       />
     )
   })
-  console.log('KanbanAll components', components) // DEBUG
+
   return (
     <>
       {components}

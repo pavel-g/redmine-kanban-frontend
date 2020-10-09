@@ -5,6 +5,7 @@ import {action, IObservableObject, IObservableValue, observable} from "mobx";
 import {Board} from "../models/board";
 import {BoardFullInfo} from "../models/board-full-info";
 import {IssueParam} from "../models/issue-param";
+import {BoardDataLinking} from "../service/board-data-linking";
 
 export class Store {
 
@@ -32,11 +33,21 @@ export class Store {
       // @ts-ignore
       Object.getOwnPropertyNames(this.config).forEach(propName => delete this.config[propName])
       Object.assign(this.config, response.data.config)
-      response.data.kanban?.forEach((kanbanConfig) => {
-        this.data.push(kanbanConfig)
-      })
+
+      const kanbanConfigs = await this.createKanbanConfigs(response.data.config.config as IssueParam[])
+      this.data.push(...kanbanConfigs)
     }
     return this.data
+  }
+
+  private async createKanbanConfig(issueParam: IssueParam): Promise<KanbanConfig|null> {
+    const linker = new BoardDataLinking()
+    return await linker.getKanban(issueParam)
+  }
+
+  private async createKanbanConfigs(issueParams: IssueParam[]): Promise<KanbanConfig[]> {
+    const linker = new BoardDataLinking()
+    return await linker.getKanbans(issueParams)
   }
 
   @action
@@ -59,8 +70,6 @@ export class Store {
     const children = (loadChildren)
       ? (await axios.get<number[]>(`${Config.backendUrl}/issue/${issueNumber}/children`)).data
       : null
-
-    console.log('loaded children ids:', children) // DEBUG
 
     const issueParam: IssueParam = {number: issueNumber}
     if (children) {
