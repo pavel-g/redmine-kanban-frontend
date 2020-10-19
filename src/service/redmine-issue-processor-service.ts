@@ -91,7 +91,7 @@ export class RedmineIssueProcessorService {
       case "success":
         return `[V]`
       case "failed":
-        return `[!]`
+        return `[!!!]`
       case "canceled":
       case "skipped":
       case "manual":
