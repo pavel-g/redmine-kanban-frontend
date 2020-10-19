@@ -33,7 +33,7 @@ export class RedmineIssueProcessorService {
     const mrs = this.getMrs()
     if (mrs && mrs.length > 0) {
       const mrsStr = mrs.map(mr => {
-        return this.convertStatusToText(mr.status)
+        return this.convertStatusToEmoji(mr.status)
       }).join(' ')
       description = `${description}\n\nMR: ${mrsStr}`
     }
@@ -86,25 +86,25 @@ export class RedmineIssueProcessorService {
 
   }
 
-  private convertStatusToText(status: string): string {
+  private convertStatusToEmoji(status: string): string {
     switch (status) {
       case "success":
-        return `[V]`
+        return `🟢`
       case "failed":
-        return `[!!!]`
+        return `🔴`
       case "canceled":
       case "skipped":
       case "manual":
-        return `[-]`
+        return `🔵`
       case "created":
       case "waiting_for_resource":
       case "preparing":
       case "pending":
-        return `[ ]`
+        return `🟠`
       case "running":
-        return `[.]`
+        return `🟠`
       default:
-        return `[?]`
+        return `⚪`
     }
   }
 
