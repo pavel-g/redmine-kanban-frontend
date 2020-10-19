@@ -6,6 +6,7 @@ import {DefaultColumnsConst} from "../const/default-columns-const";
 import {ItemConfig} from "../models/jkanban/item-config";
 import {RedmineIssueProcessorService} from "./redmine-issue-processor-service";
 import {issuesLoader, IssuesLoaderService} from "./issues-loader-service";
+import {mrInfoLoaderService, MrInfoLoaderService} from "./mr-info-loader-service";
 
 export class BoardDataLinking {
 
@@ -14,7 +15,12 @@ export class BoardDataLinking {
   private boardIndex = 0
 
   async getKanbans(issues: IssueParam[]): Promise<KanbanConfig[]> {
-    await this.preloadAllIssues(issues)
+    await Promise.all(
+      [
+        this.preloadAllIssues(issues),
+        this.preloadAllMrInfo(issues)
+      ]
+    )
     return (await (Promise.all(issues.map(issue => {
       return this.getKanban(issue)
     })))).filter(issue => Boolean(issue)) as KanbanConfig[]
@@ -77,6 +83,10 @@ export class BoardDataLinking {
     return issuesLoader
   }
 
+  private getMrInfoLoader(): MrInfoLoaderService {
+    return mrInfoLoaderService
+  }
+
   private getIssueNumbersFlatList(issues: IssueParam[]): number[] {
     const res: number[] = []
     for (let i = 0; i < issues.length; i++) {
@@ -94,6 +104,11 @@ export class BoardDataLinking {
   private async preloadAllIssues(issues: IssueParam[]): Promise<void> {
     const ids = this.getIssueNumbersFlatList(issues)
     await this.getIssueLoader().getIssuesData(ids)
+  }
+
+  private async preloadAllMrInfo(issues: IssueParam[]): Promise<void> {
+    const ids = this.getIssueNumbersFlatList(issues)
+    await this.getMrInfoLoader().getMrInfoForIssues(ids)
   }
 
   private async getGroupTitle(issueParam: IssueParam): Promise<string> {
@@ -116,8 +131,9 @@ export class BoardDataLinking {
       return null
     }
     const redmineIssueData = await this.getIssueLoader().getIssueData(issueParam.number)
+    const mrInfo = await this.getMrInfoLoader().getMrInfoForIssue(issueParam.number)
     if (!redmineIssueData) return null
-    const processor = new RedmineIssueProcessorService(redmineIssueData)
+    const processor = new RedmineIssueProcessorService(redmineIssueData, mrInfo)
     return await processor.convertToItemConfig()
   }
 
