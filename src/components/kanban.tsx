@@ -9,6 +9,7 @@ import AddIssueDialog from "./add-issue-dialog";
 import {AddIssueDialogStore} from "../store/add-issue-dialog-store";
 import {store} from "../store/store";
 import {KanbanConfig} from "../models/jkanban/kanban-config";
+import {CustomCard} from "./custom-card";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -108,6 +109,7 @@ const Kanban = observer((props: KanbanConfig) => {
         }}
         data={data}
         onCardClick={gotoRedmineIssue}
+        components={{Card: CustomCard}}
       />
       <AddIssueDialog data={addIssueInsideStore} callback={addIssueInsideCallback}/>
       <AddIssueDialog data={addGroupAfterStore} callback={addGroupAfterCallback}/>
