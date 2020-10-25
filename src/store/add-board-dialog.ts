@@ -1,23 +1,37 @@
-import {action, observable, reaction} from "mobx";
+import {action, makeObservable, observable, reaction} from "mobx";
+
+type AddBoardDialogStoreData = {
+  visible: boolean,
+  name: string
+}
 
 export class AddBoardDialogStore {
 
-  data = observable.object({
+  constructor(data?: AddBoardDialogStoreData) {
+    makeObservable(this, {
+      data: observable,
+      toggleVisible: action,
+      setName: action,
+      clear: action
+    })
+    if (data) {
+      this.data = data
+    }
+  }
+
+  data: AddBoardDialogStoreData = {
     visible: false,
     name: ""
-  })
+  }
 
-  @action
   toggleVisible() {
     this.data.visible = !this.data.visible
   }
 
-  @action
   setName(name: string) {
     this.data.name = name
   }
 
-  @action
   clear() {
     this.data.name = ""
   }

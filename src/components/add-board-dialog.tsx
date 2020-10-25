@@ -5,7 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {addBoardDialogStore} from "../store/add-board-dialog";
+import {AddBoardDialogStore, addBoardDialogStore} from "../store/add-board-dialog";
 import {boardStore} from "../store/board";
 import {observer} from "mobx-react";
 
@@ -30,15 +30,15 @@ const OnNameChange = (event: ChangeEvent) => {
   addBoardDialogStore.setName(value)
 }
 
-const AddBoardDialog = observer((props: {data: AddBoardDialogProps}) => {
+const AddBoardDialog = observer((props: {store: AddBoardDialogStore}) => {
   return (
     <Dialog
-      open={props.data.visible}
+      open={props.store.data.visible}
       onClose={OnAddBoardDialogClose}
     >
       <DialogTitle>Новая доска</DialogTitle>
       <DialogContent>
-        <TextField id="new-board-name" label="Название" value={props.data.name} onChange={OnNameChange}></TextField>
+        <TextField id="new-board-name" label="Название" value={props.store.data.name} onChange={OnNameChange}></TextField>
       </DialogContent>
       <DialogActions>
         <Button onClick={OnAddBoardDialogClose}>Отменить</Button>

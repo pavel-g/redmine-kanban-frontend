@@ -103,7 +103,7 @@ const App = () => {
         </Toolbar>
       </AppBar>
       <Sidebar store={sidebarStore}/>
-      <AddBoardDialog data={addBoardDialogStore.data}/>
+      <AddBoardDialog store={addBoardDialogStore}/>
       <EditBoardDialog store={editBoardDialogStore}/>
       <AddGroupDialog
         data={addGroupDialogStore}
