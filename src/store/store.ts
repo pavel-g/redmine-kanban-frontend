@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {KanbanConfig} from "../models/jkanban/kanban-config";
 import {Config} from "../config";
-import {action, IObservableObject, IObservableValue, observable} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 import {Board} from "../models/board";
 import {BoardFullInfo} from "../models/board-full-info";
 import {IssueParam} from "../models/issue-param";
@@ -9,26 +9,43 @@ import {BoardDataLinking} from "../service/board-data-linking";
 
 export class Store {
 
-  id = observable.box(-1)
+  constructor(id: number = -1, name: string = "", config: Board = {id: -1, name: ""}) {
+    makeObservable(this, {
+      id: observable,
+      name: observable,
+      config: observable,
+      loadData: action,
+      setId: action,
+      save: action,
+      addGroupIssue: action,
+      addGroupBefore: action,
+      addGroupAfter: action,
+      addIssueInside: action
+    })
+    this.id = id
+    this.name = name
+    this.config = config
+  }
 
-  name = observable.box("")
+  id: number = -1
 
-  config: Board = observable.object({
+  name: string = ""
+
+  config: Board = {
     id: -1,
     name: ""
-  })
+  }
 
   data: KanbanConfig[] = observable.array([])
 
-  @action
   async loadData(force = false): Promise<KanbanConfig[]> {
-    if (this.id.get() < 0) {
+    if (this.id < 0) {
       return []
     }
     if (this.data.length === 0 || force) {
       const response = await axios.get<BoardFullInfo>(`${Config.backendUrl}/board/${this.id}/kanban`)
-      this.id.set(response.data.id)
-      this.name.set(response.data.name)
+      this.id = response.data.id
+      this.name = response.data.name
       this.data.splice(0, this.data.length)
       // @ts-ignore
       Object.getOwnPropertyNames(this.config).forEach(propName => delete this.config[propName])
@@ -40,23 +57,16 @@ export class Store {
     return this.data
   }
 
-  private async createKanbanConfig(issueParam: IssueParam): Promise<KanbanConfig|null> {
-    const linker = new BoardDataLinking()
-    return await linker.getKanban(issueParam)
-  }
-
   private async createKanbanConfigs(issueParams: IssueParam[]): Promise<KanbanConfig[]> {
     const linker = new BoardDataLinking()
     return await linker.getKanbans(issueParams)
   }
 
-  @action
   async setId(id: number): Promise<KanbanConfig[]> {
-    this.id.set(id)
+    this.id = id
     return await this.loadData(true)
   }
 
-  @action
   async save(config: string): Promise<void> {
     const postData = {
       config: JSON.parse(config)
@@ -65,7 +75,6 @@ export class Store {
     await this.loadData(true)
   }
 
-  @action
   async addGroupIssue(issueNumber: number, loadChildren: boolean): Promise<void> {
     const children = (loadChildren)
       ? (await axios.get<number[]>(`${Config.backendUrl}/issue/${issueNumber}/children`)).data
@@ -92,7 +101,6 @@ export class Store {
     await this.loadData(true)
   }
 
-  @action
   async addGroupBefore(issueNumber: number, id: number|string): Promise<void> {
     if (!this.config.config) {
       return
@@ -115,7 +123,6 @@ export class Store {
     await this.loadData(true)
   }
 
-  @action
   async addGroupAfter(issueNumber: number, id: number|string): Promise<void> {
     if (!this.config.config) {
       return
@@ -137,7 +144,6 @@ export class Store {
     await this.loadData(true)
   }
 
-  @action
   async addIssueInside(issueNumber: number, id: number|string): Promise<void> {
     if (!this.config.config) {
       return

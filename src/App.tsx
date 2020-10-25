@@ -39,7 +39,7 @@ const OnOpenSidebarClick = () => {
 }
 
 const EditButtonClick = async () => {
-  const boardId = store.id.get()
+  const boardId = store.id
   const resp = await axios.get<Board>(`${Config.backendUrl}/board/${boardId}`)
   const data = resp.data
   editBoardDialogStore.data.config = JSON.stringify(data.config, null, "    ")
@@ -102,7 +102,7 @@ const App = () => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Sidebar visible={sidebarStore.visible}/>
+      <Sidebar store={sidebarStore}/>
       <AddBoardDialog data={addBoardDialogStore.data}/>
       <EditBoardDialog data={editBoardDialogStore.data}/>
       <AddGroupDialog

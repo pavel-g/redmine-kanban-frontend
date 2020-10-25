@@ -1,7 +1,7 @@
 import React from 'react';
 import Drawer from "@material-ui/core/Drawer"
 import {observer} from "mobx-react";
-import {sidebarStore} from "../store/sidebar"
+import {SidebarStore, sidebarStore} from "../store/sidebar"
 import BoardsList from "./boards-list";
 import {boardStore} from "../store/board";
 import Divider from "@material-ui/core/Divider";
@@ -13,7 +13,7 @@ import List from "@material-ui/core/List";
 import {addBoardDialogStore} from "../store/add-board-dialog";
 
 export type SidebarProps = {
-  visible: {value: boolean}
+  store: SidebarStore
 }
 
 const OnAddButtonClick = () => {
@@ -23,7 +23,7 @@ const OnAddButtonClick = () => {
 const Sidebar = observer((props: SidebarProps) => {
   return (
     <Drawer
-      open={props.visible.value}
+      open={props.store.visible}
       anchor="left"
       onClose={onCloseSidebar}
     >

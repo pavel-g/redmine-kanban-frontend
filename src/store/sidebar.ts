@@ -1,12 +1,18 @@
-import {action, autorun, observable} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 
 export class SidebarStore {
 
-  @observable visible = {value: false} // TODO: 2020-09-14 Заменить на observable.box
+  constructor(value: boolean = false) {
+    makeObservable(this, {
+      visible: observable,
+      toggleSidebar: action
+    })
+  }
 
-  @action
+  visible: boolean = false
+
   toggleSidebar() {
-    this.visible.value = !this.visible.value
+    this.visible = !this.visible
   }
 
 }
