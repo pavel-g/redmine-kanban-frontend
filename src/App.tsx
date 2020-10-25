@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
@@ -49,7 +49,7 @@ const EditButtonClick = async () => {
 const App = () => {
   const classes = useStyles();
 
-  const addGroupDialogStore = new AddGroupDialogStore()
+  const [addGroupDialogStore] = useState(() => new AddGroupDialogStore())
   const onSelectNewGroup = async (ok: boolean, data?: AddGroupDialogData) => {
     if (ok && data) {
       const issueNumber = data.issueNumber
