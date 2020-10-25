@@ -11,9 +11,6 @@ export type CurrentUserSelectorResult = {
 
 export class CurrentUserSelectorService {
 
-  statusesForCr = ['Code Review']
-  statusesForQa = ['Resolved', 'Testing']
-
   /** Хардкод правил мапинга текущего пользователя к статусу */
   rules = [
     {

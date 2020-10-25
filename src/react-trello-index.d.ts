@@ -154,6 +154,10 @@ declare module ReactTrello {
     tagStyle?: object;
     addLaneTitle?: string;
     addCardTitle?: string;
+
+    components?: {
+      Card: React.Component|((...args?: any) => JSX.Element)
+    }
   }
 }
 
