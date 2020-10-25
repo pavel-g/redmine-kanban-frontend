@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import ReactTrello from "react-trello";
 import {ConverterJKanbanConfigToTrelloConfig} from "../converters/converter-jkanban-config-to-trello-config";
 import {observer} from "mobx-react";
@@ -42,7 +42,7 @@ const Kanban = observer((props: KanbanConfig) => {
   }
   const data: ReactTrello.BoardData = ConverterJKanbanConfigToTrelloConfig(reactTrelloData);
 
-  const addIssueInsideStore = new AddIssueDialogStore()
+  const [addIssueInsideStore] = useState(() => new AddIssueDialogStore())
   const addIssueInsideCallback = (issueNumber: number|null) => {
     if (issueNumber != null) {
       store.addIssueInside(issueNumber, props.number || props.title || 0)
@@ -54,7 +54,7 @@ const Kanban = observer((props: KanbanConfig) => {
     addIssueInsideStore.show()
   }
 
-  const addGroupAfterStore = new AddIssueDialogStore()
+  const [addGroupAfterStore] = useState(() => new AddIssueDialogStore())
   const addGroupAfterCallback = (issueNumber: number|null) => {
     if (issueNumber != null) {
       store.addGroupAfter(issueNumber, props.title || props.number || 0)
@@ -66,7 +66,7 @@ const Kanban = observer((props: KanbanConfig) => {
     addGroupAfterStore.show()
   }
 
-  const addGroupBeforeStore = new AddIssueDialogStore()
+  const [addGroupBeforeStore] = useState(() => new AddIssueDialogStore())
   const addGroupBeforeCallback = (issueNumber: number|null) => {
     if (issueNumber != null) {
       store.addGroupBefore(issueNumber, props.title || props.number || 0)

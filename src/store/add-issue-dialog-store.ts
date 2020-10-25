@@ -1,24 +1,29 @@
-import {action, IObservableValue, observable} from "mobx";
+import {action, IObservableValue, makeObservable, observable} from "mobx";
 
 export class AddIssueDialogStore {
 
-  @observable
+  constructor() {
+    makeObservable(this, {
+      visible: observable,
+      issueNumber: observable,
+      show: action,
+      hide: action,
+      setIssueNumber: action
+    })
+  }
+
   visible: boolean = false
 
-  @observable
   issueNumber: number|null = null
 
-  @action
   show() {
     this.visible = true
   }
 
-  @action
   hide() {
     this.visible = false
   }
 
-  @action
   setIssueNumber(value: number|null): void {
     this.issueNumber = value
   }
