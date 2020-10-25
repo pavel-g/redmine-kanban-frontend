@@ -104,7 +104,7 @@ const App = () => {
       </AppBar>
       <Sidebar store={sidebarStore}/>
       <AddBoardDialog data={addBoardDialogStore.data}/>
-      <EditBoardDialog data={editBoardDialogStore.data}/>
+      <EditBoardDialog store={editBoardDialogStore}/>
       <AddGroupDialog
         data={addGroupDialogStore}
         callback={onSelectNewGroup}

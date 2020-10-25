@@ -1,25 +1,41 @@
-import {action, observable} from "mobx";
+import {action, makeObservable, observable} from "mobx";
+
+type EditBoardDialogStoreData = {
+  id: number,
+  name: string,
+  visible: boolean,
+  config: string
+}
 
 export class EditBoardDialogStore {
 
-  @observable data = {
+  constructor(data?: EditBoardDialogStoreData) {
+    makeObservable(this, {
+      data: observable,
+      toggleVisible: action,
+      setConfig: action,
+      clear: action
+    })
+    if (data) {
+      this.data = data
+    }
+  }
+
+  data: EditBoardDialogStoreData = {
     id: -1,
     name: "",
     visible: false,
     config: ""
   }
 
-  @action
   toggleVisible() {
     this.data.visible = !this.data.visible
   }
 
-  @action
   setConfig(value: string) {
     this.data.config = value
   }
 
-  @action
   clear() {
     this.data.config = ""
     this.data.id = -1

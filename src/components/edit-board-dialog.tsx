@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {observer} from "mobx-react";
-import {editBoardDialogStore} from "../store/edit-board-dialog";
+import {EditBoardDialogStore, editBoardDialogStore} from "../store/edit-board-dialog";
 import {store} from "../store/store";
 
 export type EditBoardDialogProps = {
@@ -30,10 +30,10 @@ const Change = (event: ChangeEvent) => {
   editBoardDialogStore.data.config = value
 }
 
-const EditBoardDialog = observer((props: {data: EditBoardDialogProps}) => {
+const EditBoardDialog = observer((props: {store: EditBoardDialogStore}) => {
   return (
     <Dialog
-      open={props.data.visible}
+      open={props.store.data.visible}
       onClose={Close}
     >
       <DialogTitle>Редактирование доски</DialogTitle>
@@ -41,7 +41,7 @@ const EditBoardDialog = observer((props: {data: EditBoardDialogProps}) => {
         <TextField
           multiline
           rows={10}
-          value={props.data.config}
+          value={props.store.data.config}
           onChange={Change}
         />
       </DialogContent>
