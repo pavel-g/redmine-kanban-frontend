@@ -15,6 +15,9 @@ export class BoardDataLinking {
   private boardIndex = 0
 
   async getKanbans(issues: IssueParam[]): Promise<KanbanConfig[]> {
+    if (!issues || issues.length === 0) {
+      return []
+    }
     await Promise.all(
       [
         this.preloadAllIssues(issues),
