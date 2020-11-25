@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import ReactTrello from "react-trello";
-import {ConverterJKanbanConfigToTrelloConfig} from "../converters/converter-jkanban-config-to-trello-config";
 import {observer} from "mobx-react";
 import {Config} from "../config";
 import {createStyles, makeStyles} from "@material-ui/core/styles";
@@ -8,8 +7,9 @@ import AddIssueMenu from "./add-issue-menu";
 import AddIssueDialog from "./add-issue-dialog";
 import {AddIssueDialogStore} from "../store/add-issue-dialog-store";
 import {store} from "../store/store";
-import {KanbanConfig} from "../models/jkanban/kanban-config";
 import {CustomCard} from "./custom-card";
+import {CustomCardModel} from "../models/custom-card-model";
+import {CustomSwimlaneModel} from "../models/custom-swimlane-model";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -35,18 +35,18 @@ const gotoRedmineIssue = (cardId: string) => {
   window.open(url)
 }
 
-const Kanban = observer((props: KanbanConfig) => {
+const getSwimlaneId = (data: CustomSwimlaneModel): number|string => {
+  return data.issueNumber || data.title || 0
+}
+
+const Kanban = observer((props: {data: CustomSwimlaneModel}) => {
   const classes = useStyles()
-  const reactTrelloData = props
-  if (!reactTrelloData) {
-    return (<></>)
-  }
-  const data: ReactTrello.BoardData = ConverterJKanbanConfigToTrelloConfig(reactTrelloData);
+  const data: ReactTrello.BoardData<CustomCardModel> = props.data.reactTrelloConfig
 
   const [addIssueInsideStore] = useState(() => new AddIssueDialogStore())
   const addIssueInsideCallback = (issueNumber: number|null) => {
     if (issueNumber != null) {
-      store.addIssueInside(issueNumber, props.number || props.title || 0)
+      store.addIssueInside(issueNumber, getSwimlaneId(props.data))
     }
     addIssueInsideStore.hide()
   }
@@ -58,7 +58,7 @@ const Kanban = observer((props: KanbanConfig) => {
   const [addGroupAfterStore] = useState(() => new AddIssueDialogStore())
   const addGroupAfterCallback = (issueNumber: number|null) => {
     if (issueNumber != null) {
-      store.addGroupAfter(issueNumber, props.title || props.number || 0)
+      store.addGroupAfter(issueNumber, getSwimlaneId(props.data))
     }
     addGroupAfterStore.hide()
   }
@@ -70,7 +70,7 @@ const Kanban = observer((props: KanbanConfig) => {
   const [addGroupBeforeStore] = useState(() => new AddIssueDialogStore())
   const addGroupBeforeCallback = (issueNumber: number|null) => {
     if (issueNumber != null) {
-      store.addGroupBefore(issueNumber, props.title || props.number || 0)
+      store.addGroupBefore(issueNumber, getSwimlaneId(props.data))
     }
     addGroupBeforeStore.hide()
   }
@@ -80,15 +80,15 @@ const Kanban = observer((props: KanbanConfig) => {
   }
 
   const onTitleClick = () => {
-    if (typeof props.number === 'number') {
-      gotoRedmineIssue(String(props.number))
+    if (typeof props.data.issueNumber === 'number') {
+      gotoRedmineIssue(String(props.data.issueNumber))
     }
   }
 
   return (
     <div>
       <div className={classes.groupTitleContainer}>
-        <div className={classes.groupTitleText} onClick={onTitleClick}>{reactTrelloData.title}</div>
+        <div className={classes.groupTitleText} onClick={onTitleClick}>{props.data.title}</div>
         <div>
           <AddIssueMenu
             onAddAfterClick={onAddGroupAfterMenuClick}

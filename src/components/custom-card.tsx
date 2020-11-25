@@ -1,21 +1,24 @@
 import React from "react";
+import {CustomCardStore} from "../store/custom-card-store";
+import {observer} from "mobx-react";
 
-export const CustomCard = (
-  onClick?: (e: any) => void,
-  className?: string|object,
-  name?: string,
-  cardStyle?: string,
-  body?: string,
-  dueOn?: string|Date,
-  cardColor?: string,
-  subTitle?: string,
-  tagStyle?: string|object,
-  escalationText?: string,
-  tags?: string|object|string[],
-  showDeleteButton?: boolean,
-  onDelete?: (e: any) => void
-) => {
+export const CustomCard = observer((props: {store: CustomCardStore}) => {
+  if (!props || !props.store || !props.store.data) {
+    return (
+      <>
+        <div>Empty card</div>
+      </>
+    )
+  }
+
+  const metadata = props.store.data
+
   return (
-    <div>Custom card</div>
+    <>
+      <div>Custom Card</div>
+      <div>{metadata.redmineIssueData.tracker.name} #{metadata.redmineIssueData.id}</div>
+      <hr/>
+      <div>{metadata.redmineIssueData.subject}</div>
+    </>
   )
-}
+})

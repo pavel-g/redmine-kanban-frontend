@@ -1,6 +1,7 @@
 import {RedmineIssueProcessorService} from "./redmine-issue-processor-service";
 import {usersLoader, UsersLoaderService} from "./users-loader-service";
 import {RedmineUser} from "../models/redmine-user";
+import {DefaultCurrentUserRulesConst} from "../const/default-current-user-rules-const";
 
 const DEFAULT_LABEL = 'Исп'
 
@@ -9,21 +10,12 @@ export type CurrentUserSelectorResult = {
   name: string
 }
 
+// TODO: 2020-10-31 Must be implemented in custom card or called from custom card
 export class CurrentUserSelectorService {
 
-  /** Хардкод правил мапинга текущего пользователя к статусу */
-  rules = [
-    {
-      statuses: ['Code Review'],
-      fromCustomField: 'Code Reviewer',
-      label: 'CR'
-    },
-    {
-      statuses: ['Resolved', 'Testing'],
-      fromCustomField: 'Quality Assurance',
-      label: 'QA'
-    }
-  ]
+  // TODO: 2020-10-31 Must be moved in database and backend
+  /* Hard code rules of mapping statuses and current user field */
+  rules = DefaultCurrentUserRulesConst
 
   constructor(
     private processor: RedmineIssueProcessorService

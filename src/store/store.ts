@@ -1,11 +1,11 @@
 import axios from 'axios'
-import {KanbanConfig} from "../models/jkanban/kanban-config";
 import {Config} from "../config";
 import {action, makeObservable, observable} from "mobx";
 import {Board} from "../models/board";
-import {BoardFullInfo} from "../models/board-full-info";
 import {IssueParam} from "../models/issue-param";
-import {BoardDataLinking} from "../service/board-data-linking";
+import {CustomCardModel} from "../models/custom-card-model";
+import {BoardDataLinkingForReactTrello} from "../service/board-data-linking-for-react-trello";
+import {CustomSwimlaneStore} from "./custom-swimlane-store";
 
 export class Store {
 
@@ -14,6 +14,7 @@ export class Store {
       id: observable,
       name: observable,
       config: observable,
+      data: observable,
       loadData: action,
       setId: action,
       save: action,
@@ -36,33 +37,34 @@ export class Store {
     name: ""
   }
 
-  data: KanbanConfig[] = observable.array([])
+  data: CustomSwimlaneStore[] = []
 
-  async loadData(force = false): Promise<KanbanConfig[]> {
+  async loadData(force = false): Promise<CustomSwimlaneStore[]> {
     if (this.id < 0) {
       return []
     }
     if (this.data.length === 0 || force) {
-      const response = await axios.get<BoardFullInfo>(`${Config.backendUrl}/board/${this.id}/kanban`)
-      this.id = response.data.id
-      this.name = response.data.name
-      this.data.splice(0, this.data.length)
-      // @ts-ignore
-      Object.getOwnPropertyNames(this.config).forEach(propName => delete this.config[propName])
-      Object.assign(this.config, response.data.config)
-
-      const kanbanConfigs = await this.createKanbanConfigs(response.data.config.config as IssueParam[])
-      this.data.push(...kanbanConfigs)
+      const response = await axios.get<Board>(`${Config.backendUrl}/board/${this.id}`)
+      if (!response || !response.data) {
+        return []
+      }
+      const respData = response.data
+      this.id = respData.id
+      this.name = respData.name
+      this.config = respData
+      if (this.config.config && this.config.config.length > 0) {
+        this.data = await this.createReactTrelloSwimlanes(this.config.config)
+      }
     }
     return this.data
   }
 
-  private async createKanbanConfigs(issueParams: IssueParam[]): Promise<KanbanConfig[]> {
-    const linker = new BoardDataLinking()
-    return await linker.getKanbans(issueParams)
+  private async createReactTrelloSwimlanes(issueParams: IssueParam[]): Promise<CustomSwimlaneStore[]> {
+    const linker = new BoardDataLinkingForReactTrello()
+    return await linker.getSwimlanes(issueParams)
   }
 
-  async setId(id: number): Promise<KanbanConfig[]> {
+  async setId(id: number): Promise<CustomSwimlaneStore[]> {
     this.id = id
     return await this.loadData(true)
   }

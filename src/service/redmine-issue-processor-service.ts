@@ -5,6 +5,8 @@ import {ItemConfig} from "../models/jkanban/item-config";
 import {Config} from "../config";
 import {MergeRequestStatusInCard} from "../models/jkanban/mergerequest-status-in-card";
 import {MergeRequestStatuses} from "../models/mergerequest-statuses";
+import {createEmptyCustomCardModel, CustomCardModel} from "../models/custom-card-model";
+import {CustomCardStore} from "../store/custom-card-store";
 
 export class RedmineIssueProcessorService {
 
@@ -25,27 +27,16 @@ export class RedmineIssueProcessorService {
     return field ? field.value : null
   }
 
-  async convertToItemConfig(): Promise<ItemConfig> {
-    const currentUser = await this.getCurrentUser()
+  async convertToItemConfig(): Promise<CustomCardStore> {
+    const userSelector = new CurrentUserSelectorService(this)
 
-    let description = `${this.data.subject}\n\n${currentUser.label}: ${currentUser.name}`
+    const customCardData = createEmptyCustomCardModel(this.data.id, this.data)
+    customCardData.mergeRequests = this.mrStatuses
+    // TODO: 2020-10-31 Moved field names for CR and QA in board params in database and backend
+    customCardData.customFields.cr = await userSelector.getRedmineUserFromCustomField('Code Reviewer')
+    customCardData.customFields.qa = await userSelector.getRedmineUserFromCustomField('Quality Assurance')
 
-    const mrs = this.getMrs()
-    if (mrs && mrs.length > 0) {
-      const mrsStr = mrs.map(mr => {
-        return this.convertStatusToEmoji(mr.status)
-      }).join(' ')
-      description = `${description}\n\nMR: ${mrsStr}`
-    }
-
-    const res: ItemConfig = {
-      id: `${this.data.id}`,
-      title: `${this.data.tracker?.name} #${this.data.id}`,
-      description: description,
-      url: this.getIssueUrl(this.data.id),
-      mrs: mrs
-    }
-    return res
+    return new CustomCardStore(customCardData)
   }
 
   private getUsersLoader(): UsersLoaderService {
