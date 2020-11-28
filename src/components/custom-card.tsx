@@ -1,6 +1,7 @@
 import React from "react";
 import {CustomCardModel} from "../models/custom-card-model";
 import {observer} from "mobx-react";
+import {MovableCardWrapper, CardHeader, CardTitle, CardRightContent, Detail} from "../styles/Base";
 
 export const CustomCard = observer((props: CustomCardModel) => {
   if (!props) {
@@ -14,11 +15,12 @@ export const CustomCard = observer((props: CustomCardModel) => {
   const metadata = props.metadata
 
   return (
-    <>
-      <div>Custom Card</div>
-      <div>{metadata.redmineIssueData.tracker.name} #{metadata.redmineIssueData.id}</div>
-      <hr/>
-      <div>{metadata.redmineIssueData.subject}</div>
-    </>
+    <MovableCardWrapper>
+      <CardHeader>
+        <CardTitle>{props.title}</CardTitle>
+        <CardRightContent></CardRightContent>
+      </CardHeader>
+      <Detail>{props.description}</Detail>
+    </MovableCardWrapper>
   )
 })
