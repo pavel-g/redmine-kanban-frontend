@@ -1,5 +1,5 @@
-import {CustomCardModel} from "../custom-card-model";
+import {CustomCardMetadataModel} from "../custom-card-metadata-model";
 
-export interface LaneStoreModel extends ReactTrello.Lane<CustomCardModel> {
+export interface LaneStoreModel extends ReactTrello.Lane<CustomCardMetadataModel> {
 
 }

@@ -1,5 +1,5 @@
 import {MergeRequestStatusInCard} from "./mergerequest-status-in-card";
-import {CustomCardModel} from "../custom-card-model";
+import {CustomCardMetadataModel} from "../custom-card-metadata-model";
 
 export type ItemConfig = {
     id: string
@@ -7,5 +7,5 @@ export type ItemConfig = {
     description: string,
     url: string,
     mrs: MergeRequestStatusInCard[],
-    rawData: CustomCardModel
+    rawData: CustomCardMetadataModel
 }

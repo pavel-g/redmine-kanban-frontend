@@ -2,7 +2,7 @@ import {RedmineIssueData} from "./redmine-issue-data";
 import {RedmineUser} from "./redmine-user";
 import {MergeRequestStatuses} from "./mergerequest-statuses";
 
-export type CustomCardModel = {
+export type CustomCardMetadataModel = {
   issueNumber: number,
   redmineIssueData: RedmineIssueData,
   customFields: {
@@ -12,7 +12,7 @@ export type CustomCardModel = {
   mergeRequests: MergeRequestStatuses[]
 }
 
-export function createEmptyCustomCardModel(issueNumber: number, redmineIssueData: RedmineIssueData): CustomCardModel {
+export function createEmptyCustomCardModel(issueNumber: number, redmineIssueData: RedmineIssueData): CustomCardMetadataModel {
   return {
     issueNumber: issueNumber,
     redmineIssueData: redmineIssueData,

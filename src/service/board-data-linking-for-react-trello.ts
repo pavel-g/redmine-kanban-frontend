@@ -1,6 +1,6 @@
 import {GroupStoreModel} from "../models/store/group-store-model";
 import {IssueParam} from "../models/issue-param";
-import {CustomCardModel} from "../models/custom-card-model";
+import {CustomCardMetadataModel} from "../models/custom-card-metadata-model";
 import {issuesLoader, IssuesLoaderService} from "./issues-loader-service";
 import {DefaultColumnsConst} from "../const/default-columns-const";
 import * as UUID from "uuid"
@@ -50,7 +50,7 @@ export class BoardDataLinkingForReactTrello {
     } as CustomSwimlaneModel
   }
 
-  private async getLanes(group: IssueParam): Promise<ReactTrello.Lane<CustomCardModel>[]> {
+  private async getLanes(group: IssueParam): Promise<ReactTrello.Lane<CustomCardMetadataModel>[]> {
     const lanes = this.createEmptyLanes()
     if (!group.children || group.children.length === 0) {
       return lanes
@@ -124,8 +124,8 @@ export class BoardDataLinkingForReactTrello {
     return res
   }
 
-  private createEmptyLanes(): ReactTrello.Lane<CustomCardModel>[] {
-    const lanes: ReactTrello.Lane<CustomCardModel>[] = []
+  private createEmptyLanes(): ReactTrello.Lane<CustomCardMetadataModel>[] {
+    const lanes: ReactTrello.Lane<CustomCardMetadataModel>[] = []
     for (let i = 0; i < this.columns.length; i++) {
       const column = this.columns[i]
       lanes.push({

@@ -1,5 +1,5 @@
 import {issuesLoader, IssuesLoaderService} from "./issues-loader-service";
-import {createEmptyCustomCardModel, CustomCardModel} from "../models/custom-card-model";
+import {createEmptyCustomCardModel, CustomCardMetadataModel} from "../models/custom-card-metadata-model";
 import {CustomCardStore} from "../store/custom-card-store";
 import {usersLoader, UsersLoaderService} from "./users-loader-service";
 import {RedmineUser} from "../models/redmine-user";
@@ -13,7 +13,7 @@ export class CustomCardDataService {
     return data ? new CustomCardStore(data) : null
   }
 
-  async createCustomCardData(issueNumber: number): Promise<CustomCardModel|null> {
+  async createCustomCardData(issueNumber: number): Promise<CustomCardMetadataModel|null> {
     const issuesLoader = this.getIssuesLoader()
     const issueData = await issuesLoader.getIssueData(issueNumber)
     if (!issueData) return null

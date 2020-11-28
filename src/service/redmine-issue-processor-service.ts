@@ -5,7 +5,7 @@ import {ItemConfig} from "../models/jkanban/item-config";
 import {Config} from "../config";
 import {MergeRequestStatusInCard} from "../models/jkanban/mergerequest-status-in-card";
 import {MergeRequestStatuses} from "../models/mergerequest-statuses";
-import {createEmptyCustomCardModel, CustomCardModel} from "../models/custom-card-model";
+import {createEmptyCustomCardModel, CustomCardMetadataModel} from "../models/custom-card-metadata-model";
 import {CustomCardStore} from "../store/custom-card-store";
 
 export class RedmineIssueProcessorService {

@@ -8,7 +8,7 @@ import AddIssueDialog from "./add-issue-dialog";
 import {AddIssueDialogStore} from "../store/add-issue-dialog-store";
 import {store} from "../store/store";
 import {CustomCard} from "./custom-card";
-import {CustomCardModel} from "../models/custom-card-model";
+import {CustomCardMetadataModel} from "../models/custom-card-metadata-model";
 import {CustomSwimlaneModel} from "../models/custom-swimlane-model";
 
 const useStyles = makeStyles(() =>
@@ -41,7 +41,7 @@ const getSwimlaneId = (data: CustomSwimlaneModel): number|string => {
 
 const Kanban = observer((props: {data: CustomSwimlaneModel}) => {
   const classes = useStyles()
-  const data: ReactTrello.BoardData<CustomCardModel> = props.data.reactTrelloConfig
+  const data: ReactTrello.BoardData<CustomCardMetadataModel> = props.data.reactTrelloConfig
 
   const [addIssueInsideStore] = useState(() => new AddIssueDialogStore())
   const addIssueInsideCallback = (issueNumber: number|null) => {

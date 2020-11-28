@@ -3,7 +3,7 @@ import {Config} from "../config";
 import {action, makeObservable, observable} from "mobx";
 import {Board} from "../models/board";
 import {IssueParam} from "../models/issue-param";
-import {CustomCardModel} from "../models/custom-card-model";
+import {CustomCardMetadataModel} from "../models/custom-card-metadata-model";
 import {BoardDataLinkingForReactTrello} from "../service/board-data-linking-for-react-trello";
 import {CustomSwimlaneStore} from "./custom-swimlane-store";
 

@@ -1,8 +1,8 @@
-import {CustomCardModel} from "../models/custom-card-model";
+import {CustomCardMetadataModel} from "../models/custom-card-metadata-model";
 import {makeObservable, observable} from "mobx";
 import {CustomCardStore} from "./custom-card-store";
 
-export class CustomLaneStore implements ReactTrello.Lane<CustomCardModel> {
+export class CustomLaneStore implements ReactTrello.Lane<CustomCardMetadataModel> {
 
   cards: CustomCardStore[];
   id: string;

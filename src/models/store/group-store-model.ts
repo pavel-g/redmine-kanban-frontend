@@ -1,8 +1,8 @@
-import {CustomCardModel} from "../custom-card-model";
+import {CustomCardMetadataModel} from "../custom-card-metadata-model";
 
 /**
  * Model of data for cards group
  */
-export interface GroupStoreModel extends ReactTrello.BoardData<CustomCardModel> {
+export interface GroupStoreModel extends ReactTrello.BoardData<CustomCardMetadataModel> {
 
 }
