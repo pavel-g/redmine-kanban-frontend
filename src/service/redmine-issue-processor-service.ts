@@ -6,7 +6,7 @@ import {Config} from "../config";
 import {MergeRequestStatusInCard} from "../models/jkanban/mergerequest-status-in-card";
 import {MergeRequestStatuses} from "../models/mergerequest-statuses";
 import {createEmptyCustomCardModel, CustomCardMetadataModel} from "../models/custom-card-metadata-model";
-import {CustomCardStore} from "../store/custom-card-store";
+import {CustomCardModel} from "../models/custom-card-model";
 
 export class RedmineIssueProcessorService {
 
@@ -27,7 +27,7 @@ export class RedmineIssueProcessorService {
     return field ? field.value : null
   }
 
-  async convertToItemConfig(): Promise<CustomCardStore> {
+  async convertToItemConfig(): Promise<CustomCardModel> {
     const userSelector = new CurrentUserSelectorService(this)
 
     const customCardData = createEmptyCustomCardModel(this.data.id, this.data)
@@ -36,7 +36,7 @@ export class RedmineIssueProcessorService {
     customCardData.customFields.cr = await userSelector.getRedmineUserFromCustomField('Code Reviewer')
     customCardData.customFields.qa = await userSelector.getRedmineUserFromCustomField('Quality Assurance')
 
-    return new CustomCardStore(customCardData)
+    return new CustomCardModel(customCardData)
   }
 
   private getUsersLoader(): UsersLoaderService {

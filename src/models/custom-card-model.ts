@@ -1,10 +1,10 @@
-import {CustomCardMetadataModel} from "../models/custom-card-metadata-model";
+import {CustomCardMetadataModel} from "./custom-card-metadata-model";
 import ReactTrello from "react-trello";
 
 /**
- * Store data for custom card for ReactTrello
+ * Data for custom card for ReactTrello
  */
-export class CustomCardStore implements ReactTrello.Card<CustomCardMetadataModel> {
+export class CustomCardModel implements ReactTrello.Card<CustomCardMetadataModel> {
 
   metadata: CustomCardMetadataModel
 

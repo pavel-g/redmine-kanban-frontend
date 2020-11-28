@@ -2,6 +2,9 @@ import {RedmineIssueData} from "./redmine-issue-data";
 import {RedmineUser} from "./redmine-user";
 import {MergeRequestStatuses} from "./mergerequest-statuses";
 
+/**
+ * Metadata for custom card for ReactTrello
+ */
 export type CustomCardMetadataModel = {
   issueNumber: number,
   redmineIssueData: RedmineIssueData,

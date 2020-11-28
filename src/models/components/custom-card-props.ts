@@ -1,5 +1,5 @@
-import {CustomCardStore} from "../../store/custom-card-store";
+import {CustomCardModel} from "../custom-card-model";
 
 export type CustomCardProps = {
-  store: CustomCardStore
+  store: CustomCardModel
 }

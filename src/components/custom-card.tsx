@@ -1,8 +1,8 @@
 import React from "react";
-import {CustomCardStore} from "../store/custom-card-store";
+import {CustomCardModel} from "../models/custom-card-model";
 import {observer} from "mobx-react";
 
-export const CustomCard = observer((props: CustomCardStore) => {
+export const CustomCard = observer((props: CustomCardModel) => {
   if (!props) {
     return (
       <>
