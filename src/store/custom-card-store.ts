@@ -1,5 +1,4 @@
 import {CustomCardModel} from "../models/custom-card-model";
-import {computed, makeObservable, observable} from "mobx";
 import ReactTrello from "react-trello";
 
 /**
@@ -7,38 +6,22 @@ import ReactTrello from "react-trello";
  */
 export class CustomCardStore implements ReactTrello.Card<CustomCardModel> {
 
-  data: CustomCardModel
+  metadata: CustomCardModel
+
+  currentUser: string
+
+  id: string
+
+  title: string
+
+  description: string
 
   constructor(data: CustomCardModel) {
-    makeObservable(this, {
-      data: observable,
-      currentUser: computed,
-      id: computed,
-      title: computed,
-      description: computed,
-      metadata: computed
-    })
-    this.data = data
-  }
-
-  get currentUser(): string {
-    return ''
-  }
-
-  get id(): string {
-    return `issue_${this.data.issueNumber}`
-  }
-
-  get title(): string {
-    return `${this.data.redmineIssueData.tracker.name} #${this.data.redmineIssueData.id}`
-  }
-
-  get description(): string {
-    return this.data.redmineIssueData.subject
-  }
-
-  get metadata(): CustomCardModel {
-    return this.data
+    this.metadata = data
+    this.currentUser = ""
+    this.id = `issue_${data.issueNumber}`
+    this.title = `${data.redmineIssueData.tracker.name} #${data.issueNumber}`
+    this.description = `${data.redmineIssueData.subject}`
   }
 
 }

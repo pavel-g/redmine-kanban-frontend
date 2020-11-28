@@ -2,8 +2,8 @@ import React from "react";
 import {CustomCardStore} from "../store/custom-card-store";
 import {observer} from "mobx-react";
 
-export const CustomCard = observer((props: {store: CustomCardStore}) => {
-  if (!props || !props.store || !props.store.data) {
+export const CustomCard = observer((props: CustomCardStore) => {
+  if (!props) {
     return (
       <>
         <div>Empty card</div>
@@ -11,7 +11,7 @@ export const CustomCard = observer((props: {store: CustomCardStore}) => {
     )
   }
 
-  const metadata = props.store.data
+  const metadata = props.metadata
 
   return (
     <>
