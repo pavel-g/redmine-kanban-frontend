@@ -5,6 +5,7 @@ import {Board} from "../models/board";
 import {IssueParam} from "../models/issue-param";
 import {BoardDataLinkingForReactTrello} from "../service/board-data-linking-for-react-trello";
 import {CustomSwimlaneStore} from "./custom-swimlane-store";
+import {LocalStorageBoardIdKeyConst} from "../const/local-storage-board-id-key-const";
 
 export class Store {
 
@@ -65,6 +66,7 @@ export class Store {
 
   async setId(id: number): Promise<CustomSwimlaneStore[]> {
     this.id = id
+    window.localStorage.setItem(LocalStorageBoardIdKeyConst, String(id))
     return await this.loadData(true)
   }
 
@@ -188,4 +190,7 @@ export class Store {
 }
 
 export const store = new Store()
-store.loadData()
+const boardId = window.localStorage.getItem(LocalStorageBoardIdKeyConst)
+if (typeof boardId === 'string') {
+  store.setId(Number(boardId))
+}
