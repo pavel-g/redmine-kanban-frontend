@@ -2,7 +2,7 @@ import {action, makeObservable, observable} from "mobx";
 
 export class SidebarStore {
 
-  constructor(value: boolean = false) {
+  constructor() {
     makeObservable(this, {
       visible: observable,
       toggleSidebar: action

@@ -1,7 +1,6 @@
 import React from "react";
 import Kanban from "./kanban";
 import {observer} from "mobx-react";
-import {KanbansAllProps} from "../models/components/kanban-all-props";
 import {Store} from "../store/store";
 
 const KanbansAll = observer((props: {store: Store}) => {

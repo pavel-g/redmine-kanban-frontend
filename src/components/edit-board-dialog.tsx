@@ -9,11 +9,6 @@ import {observer} from "mobx-react";
 import {EditBoardDialogStore, editBoardDialogStore} from "../store/edit-board-dialog";
 import {store} from "../store/store";
 
-export type EditBoardDialogProps = {
-  visible: boolean,
-  config: string
-}
-
 const Close = () => {
   editBoardDialogStore.data.config = ""
   editBoardDialogStore.data.visible = false

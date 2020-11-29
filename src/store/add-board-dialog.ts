@@ -1,4 +1,4 @@
-import {action, makeObservable, observable, reaction} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 
 type AddBoardDialogStoreData = {
   visible: boolean,

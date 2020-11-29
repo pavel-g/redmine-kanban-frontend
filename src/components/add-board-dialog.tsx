@@ -9,11 +9,6 @@ import {AddBoardDialogStore, addBoardDialogStore} from "../store/add-board-dialo
 import {boardStore} from "../store/board";
 import {observer} from "mobx-react";
 
-export type AddBoardDialogProps = {
-  visible: boolean,
-  name: string
-}
-
 const OnAddBoardDialogClose = () => {
   addBoardDialogStore.clear()
   addBoardDialogStore.toggleVisible()
