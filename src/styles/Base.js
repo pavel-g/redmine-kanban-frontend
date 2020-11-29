@@ -198,13 +198,10 @@ export const Detail = styled.div`
 `
 
 export const Footer = styled.div`
+  font-size: 11px;
   border-top: 1px solid #eee;
   padding-top: 6px;
-  text-align: right;
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: row;
-  flex-wrap: wrap;
+  text-align: left;
 `
 
 export const TagSpan = styled.span`

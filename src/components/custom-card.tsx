@@ -1,7 +1,8 @@
 import React from "react";
 import {CustomCardModel} from "../models/custom-card-model";
 import {observer} from "mobx-react";
-import {MovableCardWrapper, CardHeader, CardTitle, CardRightContent, Detail} from "../styles/Base";
+import {MovableCardWrapper, CardHeader, CardTitle, CardRightContent, Detail, Footer} from "../styles/Base";
+import {CustomCardMergerequestsField} from "./custom-card-mergerequests-field";
 
 export const CustomCard = observer((props: CustomCardModel) => {
   if (!props) {
@@ -20,7 +21,13 @@ export const CustomCard = observer((props: CustomCardModel) => {
         <CardTitle>{props.title}</CardTitle>
         <CardRightContent></CardRightContent>
       </CardHeader>
-      <Detail>{props.description}</Detail>
+      <Detail>
+        {props.description}
+      </Detail>
+      <Footer>
+        <div>{props.currentUser}</div>
+        <div><CustomCardMergerequestsField mergerequests={props.metadata.mergeRequests}/></div>
+      </Footer>
     </MovableCardWrapper>
   )
 })
