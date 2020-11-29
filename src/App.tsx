@@ -19,6 +19,7 @@ import {Board} from "./models/board";
 import AddGroupDialog from "./components/add-group-dialog";
 import {AddGroupDialogStore} from "./store/add-group-dialog-store";
 import {AddGroupDialogData} from "./models/components/add-group-dialog-props";
+import {Title} from "./components/title";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -82,7 +83,7 @@ const App = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Redmine Kanban
+            <Title store={store}/>
           </Typography>
           <IconButton
             edge="start"
