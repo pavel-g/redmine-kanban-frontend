@@ -20,6 +20,9 @@ import AddGroupDialog from "./components/add-group-dialog";
 import {AddGroupDialogStore} from "./store/add-group-dialog-store";
 import {AddGroupDialogData} from "./models/components/add-group-dialog-props";
 import {Title} from "./components/title";
+import TuneIcon from '@material-ui/icons/Tune';
+import {customCardSettingsDialogStore} from "./store/custom-card-settings-dialog-store";
+import {CardSettingsDialog} from "./components/card-settings-dialog";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -45,6 +48,10 @@ const EditButtonClick = async () => {
   const data = resp.data
   editBoardDialogStore.data.config = JSON.stringify(data.config, null, "    ")
   editBoardDialogStore.data.visible = true
+}
+
+const CardSettingsButtonClick = () => {
+  customCardSettingsDialogStore.setVisible(true)
 }
 
 const App = () => {
@@ -89,6 +96,14 @@ const App = () => {
             edge="start"
             className={classes.menuButton}
             color="inherit"
+            onClick={CardSettingsButtonClick}
+          >
+            <TuneIcon/>
+          </IconButton>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
             onClick={EditButtonClick}
           >
             <EditIcon/>
@@ -110,6 +125,7 @@ const App = () => {
         data={addGroupDialogStore}
         callback={onSelectNewGroup}
       />
+      <CardSettingsDialog/>
       <KanbansAll store={store}/>
     </div>
   )

@@ -1,6 +1,6 @@
 import {action, makeObservable, observable} from "mobx";
 
-export class CustomCardSettingsWindowStore {
+export class CustomCardSettingsDialogStore {
 
   visible: boolean
 
@@ -18,4 +18,4 @@ export class CustomCardSettingsWindowStore {
 
 }
 
-export const customCardSettingsWindowStore = new CustomCardSettingsWindowStore(false)
+export const customCardSettingsDialogStore = new CustomCardSettingsDialogStore(false)

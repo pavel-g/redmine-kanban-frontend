@@ -1,5 +1,4 @@
 import React from "react";
-import {observable} from "mobx";
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -10,8 +9,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import {CustomCardSettingsUsersViewOption} from "../models/store/custom-card-settings-model";
 import {customCardSettingsStore} from "../store/custom-card-settings-store";
+import {observer} from "mobx-react";
 
-export const CardSettingsForm = observable(() => {
+export const CardSettingsForm = observer(() => {
   const setDescription = (event: any) => {
     if (!event && !event.target) {
       return
