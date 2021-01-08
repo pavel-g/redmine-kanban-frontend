@@ -60,8 +60,8 @@ export const CardSettingsForm = observer(() => {
           <Select
             labelId="user-label-label"
             id="user-label"
-            value={setUsers}
-            onChange={() => {}}
+            value={customCardSettingsStore.settings.users}
+            onChange={setUsers}
           >
             <MenuItem value={CustomCardSettingsUsersViewOption.NONE}>Отключить</MenuItem>
             <MenuItem value={CustomCardSettingsUsersViewOption.CURRENT}>Текущий исполнитель</MenuItem>
