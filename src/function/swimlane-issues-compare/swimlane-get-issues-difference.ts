@@ -4,13 +4,9 @@ import {GetIssuesFromSwimlane} from "./get-issues-from-swimlane";
 import {GetChildrenIssuesFromRedmineIssueData} from "./get-children-issues-from-redmine-issue-data";
 import {GetAddedIssues} from "./get-added-issues";
 import {GetRemovedIssues} from "./get-removed-issues";
+import {IssuesDifferenceModel} from "../../models/issues-difference-model";
 
-export type IssuesDifference = {
-  added: number[],
-  removed: number[]
-}
-
-export async function SwimlaneGetIssuesDifference(swimlane: CustomSwimlaneModel): Promise<IssuesDifference> {
+export async function SwimlaneGetIssuesDifference(swimlane: CustomSwimlaneModel): Promise<IssuesDifferenceModel> {
   if (typeof swimlane.issueNumber !== 'number') {
     return Promise.reject("Swimlane does not have issue number")
   }
