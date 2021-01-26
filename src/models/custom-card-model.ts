@@ -58,7 +58,8 @@ export class CustomCardModel implements ReactTrello.Card<CustomCardMetadataModel
   }
 
   private getExecutor(): string {
-    return `${EXECUTOR_LABEL}: ${this.metadata.redmineIssueData.assigned_to.name}`
+    const name = (this.metadata.redmineIssueData?.assigned_to?.name) ? this.metadata.redmineIssueData.assigned_to.name : "-"
+    return `${EXECUTOR_LABEL}: ${name}`
   }
 
 }
