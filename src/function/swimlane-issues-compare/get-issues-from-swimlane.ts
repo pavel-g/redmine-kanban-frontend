@@ -1,4 +1,4 @@
-import {CustomSwimlaneModel} from "../models/custom-swimlane-model";
+import {CustomSwimlaneModel} from "../../models/custom-swimlane-model";
 
 export function GetIssuesFromSwimlane(swimlane: CustomSwimlaneModel): number[] {
   const res: number[] = []
