@@ -35,9 +35,10 @@ export const CustomCard = observer((props: CustomCardModel) => {
   if (customCardSettingsStore.settings.users === CustomCardSettingsUsersViewOption.CURRENT) {
     userView = (<div>{props.currentUser}</div>)
   } else if (customCardSettingsStore.settings.users === CustomCardSettingsUsersViewOption.FULL) {
+    const executor = (metadata.redmineIssueData?.assigned_to?.name) ? metadata.redmineIssueData.assigned_to.name : "-"
     userView = (
       <>
-        <div>{props.currentUser}</div>
+        <div>Исп: {executor}</div>
         <div>CR: {props.metadata.customFields.cr?.firstname} {props.metadata.customFields.cr?.lastname}</div>
         <div>QA: {props.metadata.customFields.qa?.firstname} {props.metadata.customFields.qa?.lastname}</div>
       </>
