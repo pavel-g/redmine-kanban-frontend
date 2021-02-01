@@ -4,32 +4,32 @@ export const DefaultPipelineStatusEmojiConst: GitlabPipelineStatusStylesRules = 
   styles: [
     {
       statuses: ["success"],
-      symbol: "🌑",
+      symbol: "⬤",
       color: "green"
     },
     {
       statuses: ["failed"],
-      symbol: "🌑",
+      symbol: "⬤",
       color: "red"
     },
     {
       statuses: ["canceled", "skipped", "manual"],
-      symbol: "🌑",
+      symbol: "⬤",
       color: "gray"
     },
     {
       statuses: ["created", "waiting_for_resource", "preparing", "pending"],
-      symbol: "🌑",
+      symbol: "⬤",
       color: "yellow"
     },
     {
       statuses: ["running"],
-      symbol: "🌑",
+      symbol: "⬤",
       color: "blue"
     }
   ],
   default: {
-    symbol: "?",
+    symbol: "◯",
     color: "black"
   }
 }
