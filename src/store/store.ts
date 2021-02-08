@@ -6,6 +6,7 @@ import {IssueParam} from "../models/issue-param";
 import {BoardDataLinkingForReactTrello} from "../service/board-data-linking-for-react-trello";
 import {CustomSwimlaneStore} from "./custom-swimlane-store";
 import {LocalStorageBoardIdKeyConst} from "../const/local-storage-board-id-key-const";
+import {IssuesDifferenceModel} from "../models/issues-difference-model";
 
 export class Store {
 
@@ -162,6 +163,46 @@ export class Store {
       targetGroup.children = []
     }
     targetGroup.children.push(newIssueParam)
+
+    const postData = {
+      config: this.config.config
+    }
+    await axios.post(`${Config.backendUrl}/board/${this.id}/update`, postData)
+    await this.loadData(true)
+  }
+
+  async syncIssuesInsideGroup(issuesDiffrence: IssuesDifferenceModel, id: number|string): Promise<void> {
+    if (!this.config.config) {
+      return
+    }
+
+    const targetGroup = this.findById(id)
+    if (!targetGroup) {
+      return
+    }
+
+    issuesDiffrence.added.forEach(addedIssueNumber => {
+      if (!targetGroup.children) {
+        targetGroup.children = []
+      }
+      targetGroup.children.push({number: addedIssueNumber})
+    })
+
+    issuesDiffrence.removed.forEach(removedIssueNumber => {
+      if (!targetGroup.children) {
+        return
+      }
+
+      const foundIssue = targetGroup.children.find(issueParam => issueParam.number === removedIssueNumber)
+      if (!foundIssue) {
+        return
+      }
+
+      targetGroup.children.splice(targetGroup.children.indexOf(foundIssue), 1)
+      if (targetGroup.children.length === 0) {
+        delete targetGroup.children
+      }
+    })
 
     const postData = {
       config: this.config.config

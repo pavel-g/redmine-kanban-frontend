@@ -6,15 +6,24 @@ import {GetAddedIssues} from "./get-added-issues";
 import {GetRemovedIssues} from "./get-removed-issues";
 import {IssuesDifferenceModel} from "../../models/issues-difference-model";
 
+function CreateDefaultValue(): IssuesDifferenceModel {
+  return {
+    added: [],
+    removed: []
+  }
+}
+
 export async function SwimlaneGetIssuesDifference(swimlane: CustomSwimlaneModel): Promise<IssuesDifferenceModel> {
   if (typeof swimlane.issueNumber !== 'number') {
-    return Promise.reject("Swimlane does not have issue number")
+    console.error("Swimlane does not have issue number")
+    return CreateDefaultValue()
   }
 
   const issueNumber = swimlane.issueNumber
   const issueData = await issuesLoader.getIssueData(issueNumber)
   if (!issueData) {
-    return Promise.reject("Can not get issue data")
+    console.error("Can not get issue data")
+    return CreateDefaultValue()
   }
 
   const issuesInSwimlane = GetIssuesFromSwimlane(swimlane)

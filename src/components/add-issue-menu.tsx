@@ -3,9 +3,10 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import {AddIssueMenuProps} from "../models/components/add-issue-menu-props";
+import {AddIssueMenuStore} from "../store/add-issue-menu-store";
+import {observer} from "mobx-react";
 
-const AddIssueMenu = (props: AddIssueMenuProps) => {
+const AddIssueMenu = observer((props: {store: AddIssueMenuStore}) => {
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -18,15 +19,19 @@ const AddIssueMenu = (props: AddIssueMenuProps) => {
   }
 
   const onAddIssueInsideClick = () => {
-    props.onAddInsideClick && props.onAddInsideClick()
+    props.store.onAddInsideClick && props.store.onAddInsideClick()
     onMenuClose()
   }
   const onAddIssueBeforeClick = () => {
-    props.onAddBeforeClick && props.onAddBeforeClick()
+    props.store.onAddBeforeClick && props.store.onAddBeforeClick()
     onMenuClose()
   }
   const onAddIssueAfterClick = () => {
-    props.onAddAfterClick && props.onAddAfterClick()
+    props.store.onAddAfterClick && props.store.onAddAfterClick()
+    onMenuClose()
+  }
+  const onSyncClick = () => {
+    props.store.onSyncClick && props.store.onSyncClick()
     onMenuClose()
   }
 
@@ -44,10 +49,11 @@ const AddIssueMenu = (props: AddIssueMenuProps) => {
         <MenuItem onClick={onAddIssueInsideClick}>Добавить подзадачу</MenuItem>
         <MenuItem onClick={onAddIssueBeforeClick}>Добавить группу выше</MenuItem>
         <MenuItem onClick={onAddIssueAfterClick}>Добавить группу ниже</MenuItem>
+        <MenuItem onClick={onSyncClick} disabled={!props.store.isMayBeSync}>Синхронизировать</MenuItem>
       </Menu>
     </>
   )
 
-}
+})
 
 export default AddIssueMenu

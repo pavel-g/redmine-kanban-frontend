@@ -10,6 +10,11 @@ import {store} from "../store/store";
 import {CustomCard} from "./custom-card";
 import {CustomCardMetadataModel} from "../models/custom-card-metadata-model";
 import {CustomSwimlaneModel} from "../models/custom-swimlane-model";
+import {SyncSwimlaneIssuesStore} from "../store/sync-swimlane-issues-store";
+import {SyncSwimlaneIssuesDialog} from "./sync-swimlane-issues-dialog";
+import {SwimlaneGetIssuesDifference} from "../function/swimlane-issues-compare/swimlane-get-issues-difference";
+import {SyncSwimlaneIssuesDialogStore} from "../store/sync-swimlane-issues-dialog-store";
+import {AddIssueMenuStore} from "../store/add-issue-menu-store";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -85,16 +90,36 @@ const Kanban = observer((props: {data: CustomSwimlaneModel}) => {
     }
   }
 
+  const addIssueMenuStore = new AddIssueMenuStore()
+
+  addIssueMenuStore.isMayBeSync = false
+  addIssueMenuStore.onAddAfterClick = onAddGroupAfterMenuClick
+  addIssueMenuStore.onAddBeforeClick = onAddGroupBeforeMenuClick
+  addIssueMenuStore.onAddInsideClick = onAddIssueInsideMenuClick
+
+  const syncSwimlaneIssuesDialogStore = new SyncSwimlaneIssuesDialogStore(false, (data) => {
+    if (data === null) return
+    store.syncIssuesInsideGroup(data, getSwimlaneId(props.data))
+  })
+
+  // init syncSwimlaneIssuesStore and loading data for syncSwimlaneIssuesStore
+  const syncSwimlaneIssuesStore = new SyncSwimlaneIssuesStore()
+  SwimlaneGetIssuesDifference(props.data).then(issuesDifference => {
+    syncSwimlaneIssuesStore.setIssuesDifference(issuesDifference)
+    addIssueMenuStore.isMayBeSync = !syncSwimlaneIssuesStore.isEmptyIssuesDifference
+    addIssueMenuStore.onSyncClick = () => {
+      syncSwimlaneIssuesDialogStore.setVisible(true)
+    }
+  }).catch(error => {
+    console.error(`Error at calculate issues difference: ${error} issue #${props.data.issueNumber}`)
+  })
+
   return (
     <div>
       <div className={classes.groupTitleContainer}>
         <div className={classes.groupTitleText} onClick={onTitleClick}>{props.data.title}</div>
         <div>
-          <AddIssueMenu
-            onAddAfterClick={onAddGroupAfterMenuClick}
-            onAddBeforeClick={onAddGroupBeforeMenuClick}
-            onAddInsideClick={onAddIssueInsideMenuClick}
-          />
+          <AddIssueMenu store={addIssueMenuStore}/>
         </div>
       </div>
       <ReactTrello
@@ -114,6 +139,7 @@ const Kanban = observer((props: {data: CustomSwimlaneModel}) => {
       <AddIssueDialog data={addIssueInsideStore} callback={addIssueInsideCallback}/>
       <AddIssueDialog data={addGroupAfterStore} callback={addGroupAfterCallback}/>
       <AddIssueDialog data={addGroupBeforeStore} callback={addGroupBeforeCallback}/>
+      <SyncSwimlaneIssuesDialog formStore={syncSwimlaneIssuesStore} dialogStore={syncSwimlaneIssuesDialogStore}/>
     </div>
   )
 })
