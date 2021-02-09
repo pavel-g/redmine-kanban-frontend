@@ -30,14 +30,17 @@ const EditBoardDialog = observer((props: {store: EditBoardDialogStore}) => {
     <Dialog
       open={props.store.data.visible}
       onClose={Close}
+      maxWidth="md"
     >
       <DialogTitle>Редактирование доски</DialogTitle>
       <DialogContent>
         <TextField
           multiline
-          rows={10}
+          rows={20}
           value={props.store.data.config}
           onChange={Change}
+          fullWidth={true}
+          style={{width: 450}}
         />
       </DialogContent>
       <DialogActions>
