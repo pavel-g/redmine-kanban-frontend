@@ -1,31 +1,36 @@
-import React, {useRef} from "react";
+import React from "react";
 import {observer} from "mobx-react";
-import {AddIssueDialogProps} from "../models/components/add-issue-dialog-props";
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import {delay} from "../function/delay";
+import {AddIssueDialogStore} from "../store/add-issue-dialog-store";
+import {GetNumber} from "../function/get-number";
 
-const AddIssueDialog = observer((props: AddIssueDialogProps) => {
-  const issueNumberRef = useRef(props.data.issueNumber)
+const AddIssueDialog = observer((props: {store: AddIssueDialogStore}) => {
 
   const onAddButtonClick = () => {
-    if (props.callback) {
-      props.callback(issueNumberRef.current)
-    }
+    props.store.callback(props.store.issueNumber)
   }
 
   const onCancelButtonClick = () => {
-    if (props.callback) {
-      props.callback(null)
-    }
+    props.store.callback(null)
   }
+
+  const onChange = delay((event) => {
+    if (!event || !event.currentTarget || typeof event.currentTarget.value === 'undefined') {
+      return
+    }
+
+    props.store.issueNumber = GetNumber(event.currentTarget.value)
+  }, 250)
 
   return (
     <Dialog
-      open={props.data.visible}
+      open={props.store.visible}
       onClose={onCancelButtonClick}
     >
       <DialogTitle>Новая задача</DialogTitle>
@@ -33,9 +38,9 @@ const AddIssueDialog = observer((props: AddIssueDialogProps) => {
         <TextField
           id={"new-issue-number"}
           label={"Номер задачи"}
-          value={issueNumberRef.current}
+          value={props.store.issueNumber}
           type={"number"}
-          onChange={(event) => {issueNumberRef.current = Number(event.currentTarget.value)}}
+          onChange={onChange}
         >
         </TextField>
       </DialogContent>

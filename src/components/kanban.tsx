@@ -49,36 +49,36 @@ const Kanban = observer((props: {data: CustomSwimlaneModel}) => {
   const data: ReactTrello.BoardData<CustomCardMetadataModel> = props.data.reactTrelloConfig
 
   const [addIssueInsideStore] = useState(() => new AddIssueDialogStore())
-  const addIssueInsideCallback = (issueNumber: number|null) => {
+  addIssueInsideStore.setCallback((issueNumber: number|null) => {
     if (issueNumber != null) {
       store.addIssueInside(issueNumber, getSwimlaneId(props.data))
     }
     addIssueInsideStore.hide()
-  }
+  })
   const onAddIssueInsideMenuClick = () => {
     addIssueInsideStore.setIssueNumber(0)
     addIssueInsideStore.show()
   }
 
   const [addGroupAfterStore] = useState(() => new AddIssueDialogStore())
-  const addGroupAfterCallback = (issueNumber: number|null) => {
+  addGroupAfterStore.setCallback((issueNumber: number|null) => {
     if (issueNumber != null) {
       store.addGroupAfter(issueNumber, getSwimlaneId(props.data))
     }
     addGroupAfterStore.hide()
-  }
+  })
   const onAddGroupAfterMenuClick = () => {
     addGroupAfterStore.setIssueNumber(0)
     addGroupAfterStore.show()
   }
 
   const [addGroupBeforeStore] = useState(() => new AddIssueDialogStore())
-  const addGroupBeforeCallback = (issueNumber: number|null) => {
+  addGroupBeforeStore.setCallback((issueNumber: number|null) => {
     if (issueNumber != null) {
       store.addGroupBefore(issueNumber, getSwimlaneId(props.data))
     }
     addGroupBeforeStore.hide()
-  }
+  })
   const onAddGroupBeforeMenuClick = () => {
     addGroupBeforeStore.setIssueNumber(0)
     addGroupBeforeStore.show()
@@ -136,9 +136,9 @@ const Kanban = observer((props: {data: CustomSwimlaneModel}) => {
         onCardClick={gotoRedmineIssue}
         components={{Card: CustomCard}}
       />
-      <AddIssueDialog data={addIssueInsideStore} callback={addIssueInsideCallback}/>
-      <AddIssueDialog data={addGroupAfterStore} callback={addGroupAfterCallback}/>
-      <AddIssueDialog data={addGroupBeforeStore} callback={addGroupBeforeCallback}/>
+      <AddIssueDialog store={addIssueInsideStore}/>
+      <AddIssueDialog store={addGroupAfterStore}/>
+      <AddIssueDialog store={addGroupBeforeStore}/>
       <SyncSwimlaneIssuesDialog formStore={syncSwimlaneIssuesStore} dialogStore={syncSwimlaneIssuesDialogStore}/>
     </div>
   )

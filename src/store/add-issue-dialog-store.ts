@@ -1,20 +1,14 @@
-import {action, makeObservable, observable} from "mobx";
+import {makeAutoObservable} from "mobx";
 
 export class AddIssueDialogStore {
 
   constructor() {
-    makeObservable(this, {
-      visible: observable,
-      issueNumber: observable,
-      show: action,
-      hide: action,
-      setIssueNumber: action
-    })
+    makeAutoObservable(this)
   }
 
   visible: boolean = false
-
   issueNumber: number|null = null
+  callback: (result: number|null) => void = (result: number|null) => {}
 
   show() {
     this.visible = true
@@ -26,6 +20,10 @@ export class AddIssueDialogStore {
 
   setIssueNumber(value: number|null): void {
     this.issueNumber = value
+  }
+
+  setCallback(cb: (result: number|null) => void): void {
+    this.callback = cb
   }
 
 }
