@@ -33,6 +33,20 @@ export const CardSettingsForm = observer(() => {
     customCardSettingsStore.setMergeRequests(event.target.checked)
   }
 
+  const setProgress = (event: any) => {
+    if (!event && !event.target) {
+      return
+    }
+    customCardSettingsStore.setProgress(event.target.checked)
+  }
+
+  const setSpentTime = (event: any) => {
+    if (!event && !event.target) {
+      return
+    }
+    customCardSettingsStore.setSpentTime(event.target.checked)
+  }
+
   return (
     <>
 
@@ -84,6 +98,34 @@ export const CardSettingsForm = observer(() => {
           }
           label="Gitlab Merge Requests"
         />
+      </FormGroup>
+
+      {/*Progress*/}
+      <FormGroup row>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={customCardSettingsStore.settings.progress}
+              onChange={setProgress}
+              name="progress"
+              color="primary"
+            />
+          }
+          label="Прогресс"/>
+      </FormGroup>
+
+      {/*Spent time*/}
+      <FormGroup row>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={customCardSettingsStore.settings.spentTime}
+              onChange={setSpentTime}
+              name="spentTime"
+              color="primary"
+            />
+          }
+          label="Потраченное время"/>
       </FormGroup>
 
     </>
