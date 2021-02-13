@@ -20,15 +20,15 @@ export class CustomCardSettingsStore {
     global["customCardSettingsStore"] = this
   }
 
-  setDescription(value: boolean) {
+  setDescription(value: boolean): void {
     this.settings.description = value
   }
 
-  setUsers(value: CustomCardSettingsUsersViewOption) {
+  setUsers(value: CustomCardSettingsUsersViewOption): void {
     this.settings.users = value
   }
 
-  setMergeRequests(value: boolean) {
+  setMergeRequests(value: boolean): void {
     this.settings.mergeRequests = value
   }
 
