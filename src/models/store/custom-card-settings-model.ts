@@ -7,5 +7,7 @@ export enum CustomCardSettingsUsersViewOption {
 export type CustomCardSettingsModel = {
   users: CustomCardSettingsUsersViewOption,
   mergeRequests: boolean
-  description: boolean
+  description: boolean,
+  progress: boolean,
+  spentTime: boolean
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {CustomCardModel} from "../models/custom-card-model";
 import {observer} from "mobx-react";
 import {CardHeader, CardRightContent, CardTitle, Detail, Footer, MovableCardWrapper} from "../styles/Base";
@@ -6,6 +6,8 @@ import {CustomCardMergerequestsField} from "./custom-card-mergerequests-field";
 import {Config} from "../config";
 import {customCardSettingsStore} from "../store/custom-card-settings-store";
 import {CustomCardSettingsUsersViewOption} from "../models/store/custom-card-settings-model";
+import {CustomCardSpentTime} from "./custom-card-spent-time";
+import {CustomCardSpentTimeStore} from "../store/custom-card-spent-time-store";
 
 export const CustomCard = observer((props: CustomCardModel) => {
   if (!props) {
@@ -47,6 +49,17 @@ export const CustomCard = observer((props: CustomCardModel) => {
     userView = undefined
   }
 
+  const progressView = customCardSettingsStore.settings.progress
+    ? (<div>Прогресс: {props.metadata.redmineIssueData?.done_ratio || 0}%</div>)
+    : undefined
+
+  const [spentTimeStore] = useState(() => new CustomCardSpentTimeStore())
+  spentTimeStore.setSpentTime(props.metadata.redmineIssueData.spent_hours || 0)
+  spentTimeStore.setEstimationTime(props.metadata.redmineIssueData.estimated_hours || 0)
+  const spentTimeView = customCardSettingsStore.settings.spentTime
+    ? (<CustomCardSpentTime store={spentTimeStore}/>)
+    : undefined
+
   return (
     <MovableCardWrapper>
       <CardHeader>
@@ -57,6 +70,8 @@ export const CustomCard = observer((props: CustomCardModel) => {
       <Footer>
         {userView}
         {mergeRequestsView}
+        {progressView}
+        {spentTimeView}
       </Footer>
     </MovableCardWrapper>
   )

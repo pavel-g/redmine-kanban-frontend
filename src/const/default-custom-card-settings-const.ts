@@ -3,5 +3,7 @@ import {CustomCardSettingsModel, CustomCardSettingsUsersViewOption} from "../mod
 export const DefaultCustomCardSettingsConst: CustomCardSettingsModel = {
   description: true,
   mergeRequests: true,
-  users: CustomCardSettingsUsersViewOption.CURRENT
+  users: CustomCardSettingsUsersViewOption.CURRENT,
+  spentTime: false,
+  progress: false
 }

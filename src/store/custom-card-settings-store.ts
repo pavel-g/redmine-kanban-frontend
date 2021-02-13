@@ -1,4 +1,4 @@
-import {action, makeObservable, observable} from "mobx";
+import {makeAutoObservable} from "mobx";
 import {CustomCardSettingsModel, CustomCardSettingsUsersViewOption} from "../models/store/custom-card-settings-model";
 import {DefaultCustomCardSettingsConst} from "../const/default-custom-card-settings-const";
 
@@ -7,12 +7,7 @@ export class CustomCardSettingsStore {
   settings: CustomCardSettingsModel
 
   constructor(settings: CustomCardSettingsModel) {
-    makeObservable(this, {
-      settings: observable,
-      setDescription: action,
-      setUsers: action,
-      setMergeRequests: action
-    })
+    makeAutoObservable(this)
     this.settings = settings
 
     // TODO: 2020-11-29 Remove global variable after implement UI for settings
@@ -30,6 +25,14 @@ export class CustomCardSettingsStore {
 
   setMergeRequests(value: boolean): void {
     this.settings.mergeRequests = value
+  }
+
+  setProgress(value: boolean): void {
+    this.settings.progress = value
+  }
+
+  setSpentTime(value: boolean): void {
+    this.settings.spentTime = value
   }
 
 }
