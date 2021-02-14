@@ -5,6 +5,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {AddIssueMenuStore} from "../store/add-issue-menu-store";
 import {observer} from "mobx-react";
+import SyncIcon from '@material-ui/icons/Sync';
 
 const AddIssueMenu = observer((props: {store: AddIssueMenuStore}) => {
 
@@ -37,6 +38,9 @@ const AddIssueMenu = observer((props: {store: AddIssueMenuStore}) => {
 
   return (
     <>
+      <IconButton onClick={onSyncClick} disabled={!props.store.isMayBeSync}>
+        <SyncIcon/>
+      </IconButton>
       <IconButton onClick={onMenuClick}>
         <AddIcon/>
       </IconButton>
@@ -49,7 +53,6 @@ const AddIssueMenu = observer((props: {store: AddIssueMenuStore}) => {
         <MenuItem onClick={onAddIssueInsideClick}>Добавить подзадачу</MenuItem>
         <MenuItem onClick={onAddIssueBeforeClick}>Добавить группу выше</MenuItem>
         <MenuItem onClick={onAddIssueAfterClick}>Добавить группу ниже</MenuItem>
-        <MenuItem onClick={onSyncClick} disabled={!props.store.isMayBeSync}>Синхронизировать</MenuItem>
       </Menu>
     </>
   )
