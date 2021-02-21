@@ -23,6 +23,7 @@ import {Title} from "./components/title";
 import TuneIcon from '@material-ui/icons/Tune';
 import {customCardSettingsDialogStore} from "./store/custom-card-settings-dialog-store";
 import {CardSettingsDialog} from "./components/card-settings-dialog";
+import {editBoardGeneratorInputStore} from "./store/edit-board-generator-input-store";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -48,6 +49,7 @@ const EditButtonClick = async () => {
   const data = resp.data
   editBoardDialogStore.data.config = JSON.stringify(data.config, null, "    ")
   editBoardDialogStore.data.visible = true
+  editBoardGeneratorInputStore.setValue('')
 }
 
 const CardSettingsButtonClick = () => {

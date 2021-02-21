@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import {observer} from "mobx-react";
 import {EditBoardDialogStore, editBoardDialogStore} from "../store/edit-board-dialog";
 import {store} from "../store/store";
+import {EditBoardGeneratorInputForm} from "./edit-board-generator-input-form";
 
 const Close = () => {
   editBoardDialogStore.data.config = ""
@@ -26,6 +27,10 @@ const Change = (event: ChangeEvent) => {
 }
 
 const EditBoardDialog = observer((props: {store: EditBoardDialogStore}) => {
+  const onGenerate = (config: string) => {
+    props.store.data.config = config
+  }
+
   return (
     <Dialog
       open={props.store.data.visible}
@@ -34,6 +39,7 @@ const EditBoardDialog = observer((props: {store: EditBoardDialogStore}) => {
     >
       <DialogTitle>Редактирование доски</DialogTitle>
       <DialogContent>
+        <EditBoardGeneratorInputForm onGenerate={onGenerate}/>
         <TextField
           multiline
           rows={20}
