@@ -7,6 +7,9 @@ import {BoardDataLinkingForReactTrello} from "../service/board-data-linking-for-
 import {CustomSwimlaneStore} from "./custom-swimlane-store";
 import {LocalStorageBoardIdKeyConst} from "../const/local-storage-board-id-key-const";
 import {IssuesDifferenceModel} from "../models/issues-difference-model";
+import {GetFlatListOfIssuesFromBoard} from "../function/get-flat-list-of-issues";
+import {GetTotalTime} from "../function/get-total-time";
+import {issuesLoader, IssuesLoaderService} from "../service/issues-loader-service";
 
 export class Store {
 
@@ -16,6 +19,8 @@ export class Store {
       name: observable,
       config: observable,
       data: observable,
+      issuesFlatList: observable,
+      estimatedTotalTime: observable,
       loadData: action,
       setId: action,
       save: action,
@@ -40,6 +45,12 @@ export class Store {
 
   data: CustomSwimlaneStore[] = []
 
+  issuesFlatList: number[] = []
+
+  estimatedTotalTime: number|null = null
+
+  spentTotalTime: number|null = null
+
   async loadData(force = false): Promise<CustomSwimlaneStore[]> {
     if (this.id < 0) {
       return []
@@ -53,9 +64,14 @@ export class Store {
       this.id = respData.id
       this.name = respData.name
       this.config = respData
+      this.issuesFlatList = GetFlatListOfIssuesFromBoard(this.config)
       if (this.config.config && this.config.config.length > 0) {
         this.data = await this.createReactTrelloSwimlanes(this.config.config)
       }
+      const issuesLoader = this.getIssuesLoader()
+      const issuesData = await issuesLoader.getIssuesData(this.issuesFlatList)
+      this.spentTotalTime = GetTotalTime(issuesData, 'spent_hours')
+      this.estimatedTotalTime = GetTotalTime(issuesData, 'estimated_hours')
     }
     return this.data
   }
@@ -226,6 +242,10 @@ export class Store {
 
   private findByGroupName(id: string): IssueParam|null {
     return this.config?.config?.find(issueParam => issueParam.title === id) || null
+  }
+
+  private getIssuesLoader(): IssuesLoaderService {
+    return issuesLoader
   }
 
 }

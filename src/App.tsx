@@ -24,6 +24,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import {customCardSettingsDialogStore} from "./store/custom-card-settings-dialog-store";
 import {CardSettingsDialog} from "./components/card-settings-dialog";
 import {editBoardGeneratorInputStore} from "./store/edit-board-generator-input-store";
+import {TotalTimeSummary} from "./components/total-time-summary";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -93,6 +94,9 @@ const App = () => {
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             <Title store={store}/>
+          </Typography>
+          <Typography variant="h6" className={classes.title} style={{textAlign: 'right', marginRight: '30px'}}>
+            <TotalTimeSummary/>
           </Typography>
           <IconButton
             edge="start"
