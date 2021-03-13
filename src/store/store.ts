@@ -10,6 +10,8 @@ import {IssuesDifferenceModel} from "../models/issues-difference-model";
 import {GetFlatListOfIssuesFromBoard} from "../function/get-flat-list-of-issues";
 import {GetTotalTime} from "../function/get-total-time";
 import {issuesLoader, IssuesLoaderService} from "../service/issues-loader-service";
+import {CustomCardDataService} from "../service/custom-card-data-service";
+import {CustomCardModel} from "../models/custom-card-model";
 
 export class Store {
 
@@ -248,6 +250,12 @@ export class Store {
     return issuesLoader
   }
 
+  async getFlatData(): Promise<(CustomCardModel | null)[]> {
+    const issueNumbers = GetFlatListOfIssuesFromBoard(this.config)
+    const customCardDataService = new CustomCardDataService()
+    return await Promise.all(issueNumbers.map(issueNumber => customCardDataService.createCustomCardStore(issueNumber)))
+  }
+
 }
 
 export const store = new Store()
@@ -255,3 +263,7 @@ const boardId = window.localStorage.getItem(LocalStorageBoardIdKeyConst)
 if (typeof boardId === 'string') {
   store.setId(Number(boardId))
 }
+
+// DEBUG: begin
+(window as Record<string, any>)['globalStore'] = store
+// DEBUG: end
